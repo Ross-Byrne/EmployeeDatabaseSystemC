@@ -80,3 +80,46 @@ void displayEmployees(struct employeeList *head)
 	} // while
 } // displayEmployees()
 
+// finds an employee based on employee ID
+void searchEmployee(struct employeeList *head, int employeeId)
+{
+	struct employeeList *temp;
+	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
+	temp = head;
+
+	while (temp != NULL)
+	{
+		if (temp->employeeInfo.id == employeeId)
+		{
+			printf("\Employee Found!\n");
+			return;
+		} // if
+
+		temp = temp->next;
+	} // while
+
+	printf("\nData Not Found!\n");
+} // searchEmployee()
+
+// finds an employee based on employee name
+void searchEmployee(struct employeeList *head, char employeeName[25])
+{
+	struct employeeList *temp;
+	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
+	temp = head;
+
+	while (temp != NULL)
+	{
+		if (strcmp(temp->employeeInfo.name, employeeName) == 0) // if they are equal
+		{
+			printf("\Employee Found!\n");
+			return;
+		} // if
+
+		temp = temp->next;
+	} // while
+
+	printf("\nEmployee Not Found!\n");
+} // searchEmployee()
+
+

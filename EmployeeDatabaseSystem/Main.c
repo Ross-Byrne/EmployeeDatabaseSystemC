@@ -33,9 +33,6 @@ void main()
 		switch (menuChoice)
 		{
 		case 1: // login
-			//displayEmployees(head);
-			addEmployee(head);
-			displayEmployees(head);
 
 			break;
 		case 2: // exit
