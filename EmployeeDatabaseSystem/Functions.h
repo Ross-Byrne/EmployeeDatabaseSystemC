@@ -27,6 +27,20 @@ typedef struct
 	char email[25]; // must contain '.', '@' and '.com'
 }EMPLOYEE;
 
+// EMPLOYEE linked list node structure
+struct employeeList
+{
+	EMPLOYEE employeeInfo;
+	struct employeeList *next;
+};
+
 // Functions
+
 // Menu Fuctions
+void printMainMenu();
 void printMainEmployeeMenu();
+
+// linked list Functions
+void addEmployee(struct employeeList *head);
+void displayEmployees(struct employeeList *head);
+void deleteEmployee(struct employeeList *head);
