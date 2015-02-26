@@ -44,3 +44,6 @@ void printMainEmployeeMenu();
 void addEmployee(struct employeeList *head);
 void displayEmployees(struct employeeList *head);
 void deleteEmployee(struct employeeList *head);
+
+// login validation
+int login(char username[25], char password[25]);

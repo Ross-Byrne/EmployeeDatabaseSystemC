@@ -81,7 +81,7 @@ void displayEmployees(struct employeeList *head)
 } // displayEmployees()
 
 // finds an employee based on employee ID
-void searchEmployee(struct employeeList *head, int employeeId)
+void searchEmployeeId(struct employeeList *head, int employeeId)
 {
 	struct employeeList *temp;
 	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
@@ -99,10 +99,10 @@ void searchEmployee(struct employeeList *head, int employeeId)
 	} // while
 
 	printf("\nData Not Found!\n");
-} // searchEmployee()
+} // searchEmployeeId()
 
 // finds an employee based on employee name
-void searchEmployee(struct employeeList *head, char employeeName[25])
+void searchEmployeeName(struct employeeList *head, char employeeName[25])
 {
 	struct employeeList *temp;
 	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
@@ -120,6 +120,36 @@ void searchEmployee(struct employeeList *head, char employeeName[25])
 	} // while
 
 	printf("\nEmployee Not Found!\n");
-} // searchEmployee()
+} // searchEmployeeName()
+
+// to handle users logining in
+// returns 1 if details are correct, 0 if uncorrect
+int login(char username[25], char password[25])
+{
+	int comfirmUser, comfirmPass;
+	// will read from user database (UserLogin.txt)
+	
+	
+	char user[25];
+	char pass[25];
+
+	strncpy_s(user, 25, "user", 25);
+	strncpy_s(pass, 25, "pass", 25);
+	
+	comfirmUser = strncmp(user, username, 25);
+	comfirmPass = strncmp(pass, password, 25);
+
+	if (comfirmUser == 0 && comfirmPass == 0)
+	{
+		printf("\nLogin Successful!\n"); // valid login
+		return 1;
+	}
+	else
+	{
+		printf("\nLogin Unsuccessful!\n"); // invalid login
+		return 0;
+	} // if
+} // login()
+
 
 

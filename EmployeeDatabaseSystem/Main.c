@@ -6,7 +6,8 @@
 void main()
 {
 	// Variables
-	int endProgram = 0, menuChoice = 0;
+	int endProgram = 0, menuChoice = 0, loginValid = 0;
+	char username[25] = "user", password[25] = "pass";
 
 	// linked list of employees
 	struct employeeList *head; // start of linked list
@@ -33,7 +34,32 @@ void main()
 		switch (menuChoice)
 		{
 		case 1: // login
+			
+			printf("\nEnter Your Login Details.\n");
+			printf("\nEnter Your Username: ");
+			fflush(stdin);
+			fgets(username, 24, stdin);
+			printf("\nEnter Your Password: ");
+			fflush(stdin);
+			fgets(password, 24, stdin);
 
+			// checks for '\n' newline char that gets added to end of string with fgets
+			// and then removes it
+			if (username[strlen(username) - 1] == '\n') 
+			{
+				username[strlen(username) - 1] = '\0';
+			} // if
+			if (password[strlen(password) - 1] == '\n')
+			{
+				password[strlen(password) - 1] = '\0';
+			} // if
+
+			loginValid = login(username, password);
+
+			if (loginValid == 1) // if valid
+			{
+				printf("\nMove to database\n");
+			} // if
 			break;
 		case 2: // exit
 			endProgram = 99;
