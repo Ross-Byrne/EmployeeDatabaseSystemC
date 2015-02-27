@@ -6,16 +6,28 @@
 void main()
 {
 	// Variables
-	int endProgram = 0, menuChoice = 0, loginValid = 0;
-	char username[25] = "user", password[25] = "pass";
+	int endProgram, menuChoice, loginValid, i;
+
+	// listed list of login users
+	struct loginUsers *loginHead;
+	loginHead = (struct loginUsers *)malloc(sizeof(struct loginUsers)); // allocates memory for head
+	loginHead->next = NULL;
 
 	// linked list of employees
-	struct employeeList *head; // start of linked list
-	head = (struct employeeList *)malloc(sizeof(struct employeeList)); // allocates memory for head;
-	head->next = NULL; // no other node yet
+	struct employeeList *employeeHead; // start of linked list
+	employeeHead = (struct employeeList *)malloc(sizeof(struct employeeList)); // allocates memory for head;
+	employeeHead->next = NULL; // no other node yet
 
 	// initialise first employee
-	head->employeeInfo.id = 1111;
+	employeeHead->employeeInfo.id = 1111;
+
+	// initialise first login user
+	strncpy_s(loginHead->username, 25, "default", 25);
+
+	// Initialise Variables
+	endProgram = menuChoice = loginValid = i = 0;
+
+	loadUsers(loginHead);
 
 	while (endProgram != 99) // main program loop
 	{
@@ -34,27 +46,8 @@ void main()
 		switch (menuChoice)
 		{
 		case 1: // login
-			
-			printf("\nEnter Your Login Details.\n");
-			printf("\nEnter Your Username: ");
-			fflush(stdin);
-			fgets(username, 24, stdin);
-			printf("\nEnter Your Password: ");
-			fflush(stdin);
-			fgets(password, 24, stdin);
-
-			// checks for '\n' newline char that gets added to end of string with fgets
-			// and then removes it
-			if (username[strlen(username) - 1] == '\n') 
-			{
-				username[strlen(username) - 1] = '\0';
-			} // if
-			if (password[strlen(password) - 1] == '\n')
-			{
-				password[strlen(password) - 1] = '\0';
-			} // if
-
-			loginValid = login(username, password);
+	
+			loginValid = login(loginHead);
 
 			if (loginValid == 1) // if valid
 			{

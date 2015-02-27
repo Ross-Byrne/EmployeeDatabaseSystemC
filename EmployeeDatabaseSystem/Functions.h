@@ -1,9 +1,19 @@
 // Ross Byrne 2015
 // Functions Header File
+#define _CRT_SECURE_NO_WARNINGS
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include<conio.h>
+
+// File Reading and Writing
+#define USER_LOGIN "UserLogin.txt"
+#define WRITEMODE "w"
+#define READMODE "r"
+#define APPENDMODE "a"
+
+#define MAX_COUNT 200 
 
 // Structures
 
@@ -34,6 +44,14 @@ struct employeeList
 	struct employeeList *next;
 };
 
+// login users linked list
+struct loginUsers
+{
+	char username[25];
+	char password[25];
+	struct loginUsers *next;
+};
+
 // Functions
 
 // Menu Fuctions
@@ -41,9 +59,15 @@ void printMainMenu();
 void printMainEmployeeMenu();
 
 // linked list Functions
-void addEmployee(struct employeeList *head);
-void displayEmployees(struct employeeList *head);
-void deleteEmployee(struct employeeList *head);
+void addEmployee(struct employeeList *employeeHead);
+void displayEmployees(struct employeeList *employeeHead);
+void deleteEmployee(struct employeeList *employeeHead);
+
+// loading users from file
+void loadUsers(struct loginUsers *loginHead);
+void addFirstUser(struct loginUsers *loginHead, char user[25], char pass[25]);
+void addUser(struct loginUsers *loginHead, char user[25], char pass[25]);
+void displayUsers(struct loginUsers *loginHead);
 
 // login validation
-int login(char username[25], char password[25]);
+int login(struct loginUsers *loginHead);
