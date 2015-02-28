@@ -30,17 +30,21 @@ void initialiseFirstEmployee(struct employeeList *employeeHead)
 {
 	employeeHead->employeeInfo.id = 1111;
 	strncpy_s(employeeHead->employeeInfo.name, 25, "Mike Sullivan", 25);
-	strncpy_s(employeeHead->employeeInfo.address, 25, "Galway, Ireland", 25);
+	strncpy_s(employeeHead->employeeInfo.address, 45, "Galway, Ireland", 45);
 	strncpy_s(employeeHead->employeeInfo.department, 25, "Sales & Marketing", 25);
 	employeeHead->employeeInfo.dateJoined.day = 25;
 	employeeHead->employeeInfo.dateJoined.month = 03;
 	employeeHead->employeeInfo.dateJoined.year = 2000;
 	employeeHead->employeeInfo.annualSalary = 38000.00;
-	strncpy_s(employeeHead->employeeInfo.email, 25, "mike.sullivan@gmail.com", 25);
+	strncpy_s(employeeHead->employeeInfo.email, 35, "mike.sullivan@gmail.com", 35);
 } // initialiseFirstEmployee()
 
 void addEmployee(struct employeeList *employeeHead)
 {
+	char tempChar[45] = "temp";
+	int tempInt = 0;
+	float tempFloat = 0.0;
+
 	// make a temp node
 	struct employeeList *temp;
 	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
@@ -56,7 +60,53 @@ void addEmployee(struct employeeList *employeeHead)
 	newEmployee = (struct employeeList*)malloc(sizeof(struct employeeList));
 
 	// enter data
-	newEmployee->employeeInfo.id = 12345;
+	printf("\nEnter New Employee's Details.\n");
+
+	printf("\nEnter ID (Must Be Unique Number): ");
+	fflush(stdin);
+	scanf("%d", &tempInt);
+	newEmployee->employeeInfo.id = tempInt;
+
+	printf("\nEnter Name: ");
+	fflush(stdin);
+	gets(tempChar);
+	strncpy_s(newEmployee->employeeInfo.name, 25, tempChar, 25);
+
+	printf("\nEnter Address: ");
+	fflush(stdin);
+	gets(tempChar);
+	strncpy_s(newEmployee->employeeInfo.address, 25, tempChar, 25);
+
+	printf("\nEnter Department: ");
+	fflush(stdin);
+	gets(tempChar);
+	strncpy_s(newEmployee->employeeInfo.department, 25, tempChar, 25);
+
+	printf("\nEnter Date Joined: ");
+	printf("\nEnter Year (eg 1999): ");
+	fflush(stdin);
+	scanf("%d", &tempInt);
+	newEmployee->employeeInfo.dateJoined.year = tempInt;
+
+	printf("\nEnter Month (eg 03): ");
+	fflush(stdin);
+	scanf("%d", &tempInt);
+	newEmployee->employeeInfo.dateJoined.month = tempInt;
+
+	printf("\nEnter Day (eg 28): ");
+	fflush(stdin);
+	scanf("%d", &tempInt);
+	newEmployee->employeeInfo.dateJoined.day = tempInt;
+	
+	printf("\nEnter Annual Salary: ");
+	fflush(stdin);
+	scanf("%f", &tempFloat);
+	newEmployee->employeeInfo.annualSalary = tempFloat;
+
+	printf("\nEnter E-mail Address: ");
+	fflush(stdin);
+	gets(tempChar);
+	strncpy_s(newEmployee->employeeInfo.email, 35, tempChar, 35);
 
 	newEmployee->next = NULL; // new employee doesn't point to anything
 	temp->next = newEmployee; // adds new employee to end of linked list
@@ -91,15 +141,15 @@ void displayEmployees(struct employeeList *employeeHead)
 	while (temp != NULL)
 	{
 		// display employee details
-		printf("\nID: %d.", employeeHead->employeeInfo.id);
-		printf("\nName: %s.", employeeHead->employeeInfo.name);
-		printf("\nAddress: %s.", employeeHead->employeeInfo.address);
-		printf("\nDepartment: %s.", employeeHead->employeeInfo.department);
-		printf("\nDate Joined: %d/%d/%d.", employeeHead->employeeInfo.dateJoined.day,
-			employeeHead->employeeInfo.dateJoined.month,
-			employeeHead->employeeInfo.dateJoined.year);
-		printf("\nAnnual Salary: $%.2f.", employeeHead->employeeInfo.annualSalary);
-		printf("\nE-mail: %s.\n", employeeHead->employeeInfo.email);
+		printf("\nID: %d.", temp->employeeInfo.id);
+		printf("\nName: %s.", temp->employeeInfo.name);
+		printf("\nAddress: %s.", temp->employeeInfo.address);
+		printf("\nDepartment: %s.", temp->employeeInfo.department);
+		printf("\nDate Joined: %d/%d/%d.", temp->employeeInfo.dateJoined.day,
+			temp->employeeInfo.dateJoined.month,
+			temp->employeeInfo.dateJoined.year);
+		printf("\nAnnual Salary: $%.2f.", temp->employeeInfo.annualSalary);
+		printf("\nE-mail: %s.\n", temp->employeeInfo.email);
 		
 		// move to next employee in list
 		temp = temp->next;
@@ -160,12 +210,12 @@ int login(struct loginUsers *loginHead)
 	printf("\nEnter Your Login Details.\n");
 	printf("\nEnter Your Username: ");
 	fflush(stdin);
-	fgets(user, 24, stdin);
+	gets(user);
 	printf("Enter Your Password: ");
 	fflush(stdin);
-	fgets(pass, 24, stdin);
+	gets(pass);
 
-	// checks for '\n' newline char that gets added to end of string with fgets
+	/*// checks for '\n' newline char that gets added to end of string with fgets
 	// and then removes it
 	if (user[strlen(user) - 1] == '\n')
 	{
@@ -174,7 +224,7 @@ int login(struct loginUsers *loginHead)
 	if (pass[strlen(pass) - 1] == '\n')
 	{
 		pass[strlen(pass) - 1] = '\0';
-	} // if
+	} // if*/
 
 	while (temp != NULL)
 	{

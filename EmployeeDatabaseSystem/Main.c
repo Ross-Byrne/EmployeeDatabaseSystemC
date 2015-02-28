@@ -102,6 +102,7 @@ void main()
 			break;
 		case 5: // display employees by department
 			printf("\nDisplay Employees by Department.\n");
+
 			displayEmployees(employeeHead);
 			break;
 		case 6: // employee report

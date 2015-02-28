@@ -34,7 +34,7 @@ typedef struct
 	char department[25];
 	DATE dateJoined;
 	float annualSalary;
-	char email[25]; // must contain '.', '@' and '.com'
+	char email[35]; // must contain '.', '@' and '.com'
 }EMPLOYEE;
 
 // EMPLOYEE linked list node structure
