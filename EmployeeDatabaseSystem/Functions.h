@@ -63,6 +63,7 @@ void initialiseFirstEmployee(struct employeeList *employeeHead);
 void addEmployee(struct employeeList *employeeHead);
 void displayEmployees(struct employeeList *employeeHead);
 void deleteEmployee(struct employeeList *employeeHead);
+void printEmployeeDetails(struct employeeList *temp);
 
 // loading users from file
 void loadUsers(struct loginUsers *loginHead);

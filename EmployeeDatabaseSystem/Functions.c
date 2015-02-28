@@ -82,18 +82,18 @@ void addEmployee(struct employeeList *employeeHead)
 	gets(tempChar);
 	strncpy_s(newEmployee->employeeInfo.department, 25, tempChar, 25);
 
-	printf("\nEnter Date Joined: ");
+	printf("\nEnter Date Joined\n");
 	printf("\nEnter Year (eg 1999): ");
 	fflush(stdin);
 	scanf("%d", &tempInt);
 	newEmployee->employeeInfo.dateJoined.year = tempInt;
 
-	printf("\nEnter Month (eg 03): ");
+	printf("Enter Month (eg 03): ");
 	fflush(stdin);
 	scanf("%d", &tempInt);
 	newEmployee->employeeInfo.dateJoined.month = tempInt;
 
-	printf("\nEnter Day (eg 28): ");
+	printf("Enter Day (eg 28): ");
 	fflush(stdin);
 	scanf("%d", &tempInt);
 	newEmployee->employeeInfo.dateJoined.day = tempInt;
@@ -107,6 +107,9 @@ void addEmployee(struct employeeList *employeeHead)
 	fflush(stdin);
 	gets(tempChar);
 	strncpy_s(newEmployee->employeeInfo.email, 35, tempChar, 35);
+
+	printf("\nEmployee Added.\n");
+	printEmployeeDetails(newEmployee);
 
 	newEmployee->next = NULL; // new employee doesn't point to anything
 	temp->next = newEmployee; // adds new employee to end of linked list
@@ -131,25 +134,34 @@ void deleteEmployee(struct employeeList *employeeHead) // deletes last employee 
 	printf("\nLast Employee Deleted!\n");
 } // deleteEmployee()
 
+// the code that prints the employee's details
+// just pass in the pointer that is pointing to 
+// a particular employee structure in the linked list
+void printEmployeeDetails(struct employeeList *temp)
+{
+	// display employee details
+	printf("\nID: %d.", temp->employeeInfo.id);
+	printf("\nName: %s.", temp->employeeInfo.name);
+	printf("\nAddress: %s.", temp->employeeInfo.address);
+	printf("\nDepartment: %s.", temp->employeeInfo.department);
+	printf("\nDate Joined: %d/%d/%d.", temp->employeeInfo.dateJoined.day,
+		temp->employeeInfo.dateJoined.month,
+		temp->employeeInfo.dateJoined.year);
+	printf("\nAnnual Salary: $%.2f.", temp->employeeInfo.annualSalary);
+	printf("\nE-mail: %s.\n", temp->employeeInfo.email);
+} // printEmployeeDetails()
+
 // displays all of the employees in list
 void displayEmployees(struct employeeList *employeeHead)
 {
 	struct employeeList *temp;
 	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
-	temp = employeeHead;
+	temp = employeeHead; // points temp at start of linked list
 
 	while (temp != NULL)
 	{
 		// display employee details
-		printf("\nID: %d.", temp->employeeInfo.id);
-		printf("\nName: %s.", temp->employeeInfo.name);
-		printf("\nAddress: %s.", temp->employeeInfo.address);
-		printf("\nDepartment: %s.", temp->employeeInfo.department);
-		printf("\nDate Joined: %d/%d/%d.", temp->employeeInfo.dateJoined.day,
-			temp->employeeInfo.dateJoined.month,
-			temp->employeeInfo.dateJoined.year);
-		printf("\nAnnual Salary: $%.2f.", temp->employeeInfo.annualSalary);
-		printf("\nE-mail: %s.\n", temp->employeeInfo.email);
+		printEmployeeDetails(temp);
 		
 		// move to next employee in list
 		temp = temp->next;
