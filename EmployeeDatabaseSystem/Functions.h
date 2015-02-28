@@ -58,7 +58,8 @@ struct loginUsers
 void printMainMenu();
 void printMainEmployeeMenu();
 
-// linked list Functions
+// employee linked list Functions
+void initialiseFirstEmployee(struct employeeList *employeeHead);
 void addEmployee(struct employeeList *employeeHead);
 void displayEmployees(struct employeeList *employeeHead);
 void deleteEmployee(struct employeeList *employeeHead);

@@ -25,6 +25,20 @@ void printMainEmployeeMenu()
 	printf("\n7.) Exit.\n");
 } // printMainEmployeeMenu()
 
+// adds values for first employee to initialise the linked list
+void initialiseFirstEmployee(struct employeeList *employeeHead)
+{
+	employeeHead->employeeInfo.id = 1111;
+	strncpy_s(employeeHead->employeeInfo.name, 25, "Mike Sullivan", 25);
+	strncpy_s(employeeHead->employeeInfo.address, 25, "Galway, Ireland", 25);
+	strncpy_s(employeeHead->employeeInfo.department, 25, "Sales & Marketing", 25);
+	employeeHead->employeeInfo.dateJoined.day = 25;
+	employeeHead->employeeInfo.dateJoined.month = 03;
+	employeeHead->employeeInfo.dateJoined.year = 2000;
+	employeeHead->employeeInfo.annualSalary = 38000.00;
+	strncpy_s(employeeHead->employeeInfo.email, 25, "mike.sullivan@gmail.com", 25);
+} // initialiseFirstEmployee()
+
 void addEmployee(struct employeeList *employeeHead)
 {
 	// make a temp node
@@ -76,7 +90,18 @@ void displayEmployees(struct employeeList *employeeHead)
 
 	while (temp != NULL)
 	{
-		printf("\nEmployee ID: %d", temp->employeeInfo.id); // show data
+		// display employee details
+		printf("\nID: %d.", employeeHead->employeeInfo.id);
+		printf("\nName: %s.", employeeHead->employeeInfo.name);
+		printf("\nAddress: %s.", employeeHead->employeeInfo.address);
+		printf("\nDepartment: %s.", employeeHead->employeeInfo.department);
+		printf("\nDate Joined: %d/%d/%d.", employeeHead->employeeInfo.dateJoined.day,
+			employeeHead->employeeInfo.dateJoined.month,
+			employeeHead->employeeInfo.dateJoined.year);
+		printf("\nAnnual Salary: $%.2f.", employeeHead->employeeInfo.annualSalary);
+		printf("\nE-mail: %s.\n", employeeHead->employeeInfo.email);
+		
+		// move to next employee in list
 		temp = temp->next;
 	} // while
 } // displayEmployees()
@@ -220,7 +245,9 @@ void displayUsers(struct loginUsers *loginHead)
 // reads usernames and passwords of login users from a file
 void loadUsers(struct loginUsers *loginHead)
 {
-	printf("\nStarting to load users...\n");
+	/*// for testing
+	printf("\nStarting to load users...\n");*/
+
 	FILE *fPtr = NULL;
 	int i = 0;
 	char user[25] = "user", pass[25] = "pass";
@@ -247,10 +274,11 @@ void loadUsers(struct loginUsers *loginHead)
 		
 		//then close the file
 		fclose(fPtr);
+
+		/*// for testing
 		printf("\nUser login details loaded correctly!\n");
-		displayUsers(loginHead);
+		displayUsers(loginHead);*/
 	} // if
-	
 } // loadUsers()
 
 
