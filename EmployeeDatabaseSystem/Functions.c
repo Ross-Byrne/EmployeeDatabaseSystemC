@@ -21,7 +21,8 @@ void printMainEmployeeMenu()
 	printf("\n3.) Update Employee.");
 	printf("\n4.) Delete Employee.");
 	printf("\n5.) Display All Employees By Department.");
-	printf("\n6.) Employee Report.\n");
+	printf("\n6.) Employee Report.");
+	printf("\n7.) Exit.\n");
 } // printMainEmployeeMenu()
 
 void addEmployee(struct employeeList *employeeHead)
@@ -135,7 +136,7 @@ int login(struct loginUsers *loginHead)
 	printf("\nEnter Your Username: ");
 	fflush(stdin);
 	fgets(user, 24, stdin);
-	printf("iEnter Your Password: ");
+	printf("Enter Your Password: ");
 	fflush(stdin);
 	fgets(pass, 24, stdin);
 
@@ -211,7 +212,7 @@ void displayUsers(struct loginUsers *loginHead)
 
 	while (temp != NULL)
 	{
-		printf("\nUser Name: %s Pass: %s", temp->username, temp->password); // show data
+		printf("\nUser Name: %s Pass: %s\n", temp->username, temp->password); // show data
 		temp = temp->next;
 	} // while
 } // displayUsers()
