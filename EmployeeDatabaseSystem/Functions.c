@@ -25,9 +25,10 @@ void printMainEmployeeMenu()
 	printf("\n7.) Exit.\n");
 } // printMainEmployeeMenu()
 
+// gets rid of '\n' newline char at end of string after using fgets()
 void cleanString(char *temp)
 {
-	// checks for '\n' newline char that gets added to end of string with fgets
+	// checks for '\n' newline char that gets added to end of string with fgets()
 	// and then removes it
 	if (temp[strlen(temp) - 1] == '\n')
 	{
@@ -36,17 +37,17 @@ void cleanString(char *temp)
 } // cleanString()
 
 // adds values for first employee to initialise the linked list
-void initialiseFirstEmployee(struct employeeList *employeeHead)
+void initialiseFirstEmployee(struct employeeList *temp)
 {
-	employeeHead->employeeInfo.id = 1111;
-	strncpy_s(employeeHead->employeeInfo.name, 25, "Mike Sullivan", 25);
-	strncpy_s(employeeHead->employeeInfo.address, 45, "Galway, Ireland", 45);
-	strncpy_s(employeeHead->employeeInfo.department, 25, "Sales & Marketing", 25);
-	employeeHead->employeeInfo.dateJoined.day = 25;
-	employeeHead->employeeInfo.dateJoined.month = 03;
-	employeeHead->employeeInfo.dateJoined.year = 2000;
-	employeeHead->employeeInfo.annualSalary = 38000.00;
-	strncpy_s(employeeHead->employeeInfo.email, 35, "mike.sullivan@gmail.com", 35);
+	temp->employeeInfo.id = 1111;
+	strncpy_s(temp->employeeInfo.name, 25, "Mike Sullivan", 25);
+	strncpy_s(temp->employeeInfo.address, 45, "Galway, Ireland", 45);
+	strncpy_s(temp->employeeInfo.department, 25, "Sales & Marketing", 25);
+	temp->employeeInfo.dateJoined.day = 25;
+	temp->employeeInfo.dateJoined.month = 03;
+	temp->employeeInfo.dateJoined.year = 2000;
+	temp->employeeInfo.annualSalary = 38000.00;
+	strncpy_s(temp->employeeInfo.email, 35, "mike.sullivan@gmail.com", 35);
 } // initialiseFirstEmployee()
 
 void addEmployee(struct employeeList *employeeHead)
@@ -129,6 +130,31 @@ void addEmployee(struct employeeList *employeeHead)
 	temp->next = newEmployee; // adds new employee to end of linked list
 } // addEmployee()
 
+void displayEmployeeDetails(struct employeeList *employeeHead)
+{
+	int menuChoice = 0;
+
+	printf("\nHow Would You Like To Search For The Employee?\n");
+	printf("\n1.) Search By ID.");
+	printf("\n2.) Search By Name.\n");
+
+	do{
+		printf("\nEnter Option: ");
+
+		scanf("%d", &menuChoice);
+
+	} while (menuChoice < 1 || menuChoice > 2);
+
+	if (menuChoice == 1)
+	{
+		searchEmployeeId(employeeHead);
+	}
+	else // if menuChoice == 2
+	{
+		searchEmployeeName(employeeHead);
+	} // if
+} // displayEmployeeDetails()
+
 void deleteEmployee(struct employeeList *employeeHead) // deletes last employee in list
 {
 	struct employeeList *temp;
@@ -166,7 +192,7 @@ void printEmployeeDetails(struct employeeList *temp)
 } // printEmployeeDetails()
 
 // displays all of the employees in list
-void displayEmployees(struct employeeList *employeeHead)
+void displayAllEmployees(struct employeeList *employeeHead)
 {
 	struct employeeList *temp;
 	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
@@ -183,38 +209,52 @@ void displayEmployees(struct employeeList *employeeHead)
 } // displayEmployees()
 
 // finds an employee based on employee ID
-void searchEmployeeId(struct employeeList *employeeHead, int employeeId)
+void searchEmployeeId(struct employeeList *employeeHead)
 {
+	int employeeId = 0;
+
 	struct employeeList *temp;
 	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
 	temp = employeeHead;
+
+	printf("\nEnter Employee's ID: ");
+	fflush(stdin);
+	scanf("%d", &employeeId);
 
 	while (temp != NULL)
 	{
 		if (temp->employeeInfo.id == employeeId)
 		{
-			printf("\nEmployee Found!\n");
+			printf("\nEmployee Found.\n");
+			printEmployeeDetails(temp);
 			return;
 		} // if
 
 		temp = temp->next;
 	} // while
 
-	printf("\nData Not Found!\n");
+	printf("\nEmployee Not Found!\n");
 } // searchEmployeeId()
 
 // finds an employee based on employee name
-void searchEmployeeName(struct employeeList *employeeHead, char employeeName[25])
+void searchEmployeeName(struct employeeList *employeeHead)
 {
+	char employeeName[25] = "name";
 	struct employeeList *temp;
 	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
 	temp = employeeHead;
 
+	printf("\nEnter Employee's Name: ");
+	fflush(stdin);
+	fgets(employeeName, 25, stdin);
+	cleanString(employeeName);
+
 	while (temp != NULL)
 	{
-		if (strcmp(temp->employeeInfo.name, employeeName) == 0) // if they are equal
+		if (strncmp(temp->employeeInfo.name, employeeName, 25) == 0) // if they are equal
 		{
-			printf("\nEmployee Found!\n");
+			printf("\nEmployee Found.\n");
+			printEmployeeDetails(temp);
 			return;
 		} // if
 

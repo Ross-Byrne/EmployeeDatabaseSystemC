@@ -93,6 +93,8 @@ void main()
 			break;
 		case 2: // display employee details
 			printf("\nDisplay Employee Details.\n");
+
+			displayEmployeeDetails(employeeHead);
 			break;
 		case 3: // update employee
 			printf("\nUpdate Employee.\n");
@@ -103,7 +105,7 @@ void main()
 		case 5: // display employees by department
 			printf("\nDisplay Employees by Department.\n");
 
-			displayEmployees(employeeHead);
+			displayAllEmployees(employeeHead);
 			break;
 		case 6: // employee report
 			printf("\nEmployee Report.\n");
