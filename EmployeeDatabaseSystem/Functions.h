@@ -73,3 +73,6 @@ void displayUsers(struct loginUsers *loginHead);
 
 // login validation
 int login(struct loginUsers *loginHead);
+
+// Other Functions
+void cleanString(char *temp);

@@ -25,6 +25,16 @@ void printMainEmployeeMenu()
 	printf("\n7.) Exit.\n");
 } // printMainEmployeeMenu()
 
+void cleanString(char *temp)
+{
+	// checks for '\n' newline char that gets added to end of string with fgets
+	// and then removes it
+	if (temp[strlen(temp) - 1] == '\n')
+	{
+		temp[strlen(temp) - 1] = '\0';
+	} // if
+} // cleanString()
+
 // adds values for first employee to initialise the linked list
 void initialiseFirstEmployee(struct employeeList *employeeHead)
 {
@@ -41,7 +51,7 @@ void initialiseFirstEmployee(struct employeeList *employeeHead)
 
 void addEmployee(struct employeeList *employeeHead)
 {
-	char tempChar[45] = "temp";
+	char tempChar[45];
 	int tempInt = 0;
 	float tempFloat = 0.0;
 
@@ -69,17 +79,20 @@ void addEmployee(struct employeeList *employeeHead)
 
 	printf("\nEnter Name: ");
 	fflush(stdin);
-	gets(tempChar);
+	fgets(tempChar, 25, stdin);
+	cleanString(tempChar);
 	strncpy_s(newEmployee->employeeInfo.name, 25, tempChar, 25);
 
 	printf("\nEnter Address: ");
 	fflush(stdin);
-	gets(tempChar);
-	strncpy_s(newEmployee->employeeInfo.address, 25, tempChar, 25);
+	fgets(tempChar, 45, stdin);
+	cleanString(tempChar);
+	strncpy_s(newEmployee->employeeInfo.address, 45, tempChar, 45);
 
 	printf("\nEnter Department: ");
 	fflush(stdin);
-	gets(tempChar);
+	fgets(tempChar, 25, stdin);
+	cleanString(tempChar);
 	strncpy_s(newEmployee->employeeInfo.department, 25, tempChar, 25);
 
 	printf("\nEnter Date Joined\n");
@@ -105,7 +118,8 @@ void addEmployee(struct employeeList *employeeHead)
 
 	printf("\nEnter E-mail Address: ");
 	fflush(stdin);
-	gets(tempChar);
+	fgets(tempChar, 35, stdin);
+	cleanString(tempChar);
 	strncpy_s(newEmployee->employeeInfo.email, 35, tempChar, 35);
 
 	printf("\nEmployee Added.\n");
@@ -222,21 +236,13 @@ int login(struct loginUsers *loginHead)
 	printf("\nEnter Your Login Details.\n");
 	printf("\nEnter Your Username: ");
 	fflush(stdin);
-	gets(user);
+	fgets(user, 25, stdin);
+	cleanString(user);
+
 	printf("Enter Your Password: ");
 	fflush(stdin);
-	gets(pass);
-
-	/*// checks for '\n' newline char that gets added to end of string with fgets
-	// and then removes it
-	if (user[strlen(user) - 1] == '\n')
-	{
-		user[strlen(user) - 1] = '\0';
-	} // if
-	if (pass[strlen(pass) - 1] == '\n')
-	{
-		pass[strlen(pass) - 1] = '\0';
-	} // if*/
+	fgets(pass, 25, stdin);
+	cleanString(pass);
 
 	while (temp != NULL)
 	{
