@@ -62,10 +62,12 @@ void printMainEmployeeMenu();
 void initialiseFirstEmployee(struct employeeList *employeeHead);
 void addEmployee(struct employeeList *employeeHead);
 void displayEmployeeDetails(struct employeeList *employeeHead);
+void deleteEmployee(struct employeeList *employeeHead);
+void deleteEmployeeById(struct employeeList *employeeHead);
+void deleteEmployeeByName(struct employeeList *employeeHead);
 void displayAllEmployees(struct employeeList *employeeHead);
 void searchEmployeeId(struct employeeList *employeeHead);
 void searchEmployeeName(struct employeeList *employeeHead);
-void deleteEmployee(struct employeeList *employeeHead);
 void printEmployeeDetails(struct employeeList *temp);
 
 // loading users from file

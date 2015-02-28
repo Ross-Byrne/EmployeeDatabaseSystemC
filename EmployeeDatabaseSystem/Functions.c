@@ -155,24 +155,144 @@ void displayEmployeeDetails(struct employeeList *employeeHead)
 	} // if
 } // displayEmployeeDetails()
 
-void deleteEmployee(struct employeeList *employeeHead) // deletes last employee in list
+void deleteEmployee(struct employeeList *employeeHead)
 {
+	int menuChoice = 0;
+
+	printf("\nHow Would You Like To Search For The Employee?\n");
+	printf("\n1.) Search By ID.");
+	printf("\n2.) Search By Name.\n");
+
+	do{
+		printf("\nEnter Option: ");
+
+		scanf("%d", &menuChoice);
+
+	} while (menuChoice < 1 || menuChoice > 2);
+
+	if (menuChoice == 1)
+	{
+		deleteEmployeeById(employeeHead);
+	}
+	else // if menuChoice == 2
+	{
+		searchEmployeeName(employeeHead);
+	} // if
+} // deleteEmployee()
+
+// search for the employee by their id num and then delete them
+void deleteEmployeeById(struct employeeList *employeeHead) // deleting item in the middile of linked list
+{
+	int employeeId = 0, menuChoice = 0;
+
+	struct employeeList *temp;
+	struct employeeList *oldTemp;
+	struct employeeList *nextTemp;
+	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
+	oldTemp = (struct employeeList*)malloc(sizeof(struct employeeList));
+	nextTemp = (struct employeeList*)malloc(sizeof(struct employeeList));
+	temp = employeeHead; // point temp at start of linked list
+	nextTemp = temp->next; // keep track of the item ahead of the current item being looked at
+
+	printf("\nEnter Employee's ID: ");
+	fflush(stdin);
+	scanf("%d", &employeeId);
+
+	while (temp->next != NULL)  // goes to the last employee
+	{							// while keeping track of the second last employee
+		if (temp->employeeInfo.id == employeeId)
+		{
+			printf("\nEmployee Found.\n");
+			printEmployeeDetails(temp);
+			printf("\nAre You Sure You Want To Delete This Employee?\n");
+
+			printf("\n1.) Yes.");
+			printf("\n2.) No.\n");
+
+			do{
+				printf("\nEnter Option: ");
+
+				scanf("%d", &menuChoice);
+			} while (menuChoice < 1 || menuChoice > 2);
+
+			if (menuChoice == 1) // if yes
+			{
+				// point employee that is before the employee being deleted
+				// to the employee after it, keeping the linked list linked
+				oldTemp->next = nextTemp;
+				free(temp);
+				printf("\nEmployee Deleted.\n");
+			}
+			else // if no
+			{
+				printf("\nEmployee Not Deleted.\n");
+				return;
+			} // if
+		} // if
+
+		// moving to next item in list
+		oldTemp = temp; // the current item is now oldTemp
+		temp = nextTemp; // the next item in list is now the current item
+		nextTemp = nextTemp->next; // the item after the current one is updated
+	} // while
+
+	printf("\nEmployee Not Found!\n");
+} // deleteEmployeeById()
+
+// search for employee by name and then delete them
+void deleteEmployeeByName(struct employeeList *employeeHead)
+{
+	int employeeId = 0, menuChoice = 0;
+
 	struct employeeList *temp;
 	struct employeeList *oldTemp;
 	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
 	oldTemp = (struct employeeList*)malloc(sizeof(struct employeeList));
 	temp = employeeHead;
 
-	while (temp->next != NULL)  // goes to the last employee
+	printf("\nEnter Employee's ID: ");
+	fflush(stdin);
+	scanf("%d", &employeeId);
+
+	while (temp != NULL)  // goes to the last employee
 	{							// while keeping track of the second last employee
+		if (temp->employeeInfo.id == employeeId)
+		{
+			printf("\nEmployee Found.\n");
+			printEmployeeDetails(temp);
+			printf("\nAre You Sure You Want To Delete This Employee?\n");
+
+			printf("\n1.) Yes.");
+			printf("\n2.) No.\n");
+
+			do{
+				printf("\nEnter Option: ");
+
+				scanf("%d", &menuChoice);
+			} while (menuChoice < 1 || menuChoice > 2);
+
+			if (menuChoice == 1) // if yes
+			{
+				// point employee that is before the employee being deleted
+				// to the employee after it, keeping the linked list linked
+				oldTemp->next = temp->next;
+				free(temp);
+				printf("\nEmployee Deleted.\n");
+				return;
+			}
+			else // if no
+			{
+				printf("\nEmployee Not Deleted.\n");
+				return;
+			} // if
+		} // if
+
 		oldTemp = temp;
 		temp = temp->next;
 	} // while
 
-	oldTemp->next = NULL;
-	free(temp);
-	printf("\nLast Employee Deleted!\n");
-} // deleteEmployee()
+	printf("\nEmployee Not Found!\n");
+} // deleteEmployeeByName()
 
 // the code that prints the employee's details
 // just pass in the pointer that is pointing to 

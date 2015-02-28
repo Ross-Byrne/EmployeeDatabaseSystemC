@@ -47,7 +47,6 @@ void main()
 		switch (menuChoice)
 		{
 		case 1: // login
-	
 			// handles user login - makes sure login is valid
 			// returns 1 if valid, returns 0 is invalid
 			loginValid = login(loginHead);
@@ -101,6 +100,8 @@ void main()
 			break;
 		case 4: // delete employee
 			printf("\nDelete Employee.\n");
+			
+			deleteEmployee(employeeHead);
 			break;
 		case 5: // display employees by department
 			printf("\nDisplay Employees by Department.\n");
