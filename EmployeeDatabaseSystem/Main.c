@@ -71,6 +71,7 @@ void main()
 
 	while (endProgram != 99) // main program loop
 	{
+		menuChoice = 0;
 		// To make sure the number input is in the right range
 		do
 		{

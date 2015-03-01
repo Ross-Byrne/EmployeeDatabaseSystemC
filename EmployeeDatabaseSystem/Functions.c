@@ -151,58 +151,62 @@ void addEmployee(struct employeeList **employeeHeadPtr, struct employeeList *emp
 	} // if
 } // addEmployee()
 
+// finds an employee based on employee ID or name
 void displayEmployeeDetails(struct employeeList *employeeHead)
 {
-	int menuChoice = 0;
+	int employeeId = 0, menuChoice = 0;
+	char employeeName[25] = "name";
 
-	printf("\nHow Would You Like To Search For The Employee?\n");
-	printf("\n1.) Search By ID.");
-	printf("\n2.) Search By Name.\n");
+	struct employeeList *temp;
+	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
+	temp = employeeHead;
 
 	do{
-		printf("\nEnter Option: ");
+		printf("\nHow Would You Like To Search For The Employee?\n");
+		printf("\n1.) Search By ID.");
+		printf("\n2.) Search By Name.");
+		printf("\n3.) Exit.\n");
 
+		printf("\nEnter Option: ");
+		fflush(stdin);
 		scanf("%d", &menuChoice);
 
-	} while (menuChoice < 1 || menuChoice > 2);
+	} while (menuChoice < 1 || menuChoice > 3);
 
-	if (menuChoice == 1)
+	switch (menuChoice)
 	{
-		searchEmployeeId(employeeHead);
-	}
-	else // if menuChoice == 2
+	case 1: // search by id
+		printf("\nEnter Employee's ID: ");
+		fflush(stdin);
+		scanf("%d", &employeeId);
+		break;
+	case 2: // search by name
+		printf("\nEnter Employee's Name: ");
+		fflush(stdin);
+		fgets(employeeName, 25, stdin);
+		cleanString(employeeName);
+		break;
+	case 3: // exit
+		return;
+	} // switch
+
+	while (temp != NULL)
 	{
-		searchEmployeeName(employeeHead);
-	} // if
+		if (temp->employeeInfo.id == employeeId || strncmp(temp->employeeInfo.name, employeeName, 25) == 0)
+		{
+			printf("\nEmployee Found.\n");
+			printEmployeeDetails(temp);
+			return;
+		} // if
+
+		temp = temp->next;
+	} // while
+
+	printf("\nEmployee Not Found!\n");
 } // displayEmployeeDetails()
 
+// search for the employee by their id num or name and then delete them
 void deleteEmployee(struct employeeList **employeeHeadPtr, struct employeeList *employeeHead)
-{
-	int menuChoice = 0;
-
-	printf("\nHow Would You Like To Search For The Employee?\n");
-	printf("\n1.) Search By ID.");
-	printf("\n2.) Search By Name.\n");
-
-	do{
-		printf("\nEnter Option: ");
-
-		scanf("%d", &menuChoice);
-
-	} while (menuChoice < 1 || menuChoice > 2);
-
-	if (menuChoice == 1)
-	{
-		deleteEmployeeById(employeeHeadPtr, employeeHead);
-	}
-	else // if menuChoice == 2
-	{
-		searchEmployeeName(employeeHead);
-	} // if
-} // deleteEmployee()
-
-// search for the employee by their id num and then delete them
-void deleteEmployeeById(struct employeeList **employeeHeadPtr, struct employeeList *employeeHead)
 {
 	if (employeeHead == NULL) // if linked list of employees is empty
 	{
@@ -211,6 +215,7 @@ void deleteEmployeeById(struct employeeList **employeeHeadPtr, struct employeeLi
 	else // if it isn't empty
 	{
 		int employeeId = 0, menuChoice = 0;
+		char employeeName[25] = "name";
 
 		struct employeeList *temp;
 		struct employeeList *oldTemp;
@@ -221,12 +226,37 @@ void deleteEmployeeById(struct employeeList **employeeHeadPtr, struct employeeLi
 		oldTemp = NULL; // doesn't point at anything yet
 		temp = employeeHead; // point temp at start of linked list
 
-		printf("\nEnter Employee's ID: ");
-		fflush(stdin);
-		scanf("%d", &employeeId);
+		do{
+			printf("\nHow Would You Like To Search For The Employee?\n");
+			printf("\n1.) Search By ID.");
+			printf("\n2.) Search By Name.");
+			printf("\n3.) Exit.\n");
+
+			printf("\nEnter Option: ");
+			fflush(stdin);
+			scanf("%d", &menuChoice);
+
+		} while (menuChoice < 1 || menuChoice > 3);
+
+		switch (menuChoice)
+		{
+		case 1: // search by id
+			printf("\nEnter Employee's ID: ");
+			fflush(stdin);
+			scanf("%d", &employeeId);
+			break;
+		case 2: // search by name
+			printf("\nEnter Employee's Name: ");
+			fflush(stdin);
+			fgets(employeeName, 25, stdin);
+			cleanString(employeeName);
+			break;
+		case 3: // exit
+			return;
+		} // switch
 
 		// if it's the first item
-		if (temp->employeeInfo.id == employeeId && oldTemp == NULL) 
+		if ((temp->employeeInfo.id == employeeId || strncmp(temp->employeeInfo.name, employeeName, 25) == 0) && oldTemp == NULL)
 		{
 			// code to confirm if you want to delete the employee
 			// returns 1 if yes - 0 if no
@@ -255,7 +285,7 @@ void deleteEmployeeById(struct employeeList **employeeHeadPtr, struct employeeLi
 		while (temp->next != NULL)
 		{
 			// if not the first or last employee in list
-			if (temp->employeeInfo.id == employeeId && oldTemp != NULL)
+			if ((temp->employeeInfo.id == employeeId || strncmp(temp->employeeInfo.name, employeeName, 25) == 0) && oldTemp != NULL)
 			{
 				// code to confirm if you want to delete the employee
 				// returns 1 if yes - 0 if no
@@ -282,7 +312,7 @@ void deleteEmployeeById(struct employeeList **employeeHeadPtr, struct employeeLi
 		} // while
 
 		// if last employee in list
-		if (temp->employeeInfo.id == employeeId && temp->next == NULL) 
+		if ((temp->employeeInfo.id == employeeId || strncmp(temp->employeeInfo.name, employeeName, 25) == 0) && temp->next == NULL)
 		{
 			// code to confirm if you want to delete the employee
 			// returns 1 if yes - 0 if no
@@ -304,7 +334,7 @@ void deleteEmployeeById(struct employeeList **employeeHeadPtr, struct employeeLi
 
 		printf("\nEmployee Not Found!\n");
 	} // if
-} // deleteEmployeeById()
+} // deleteEmployee()
 
 int confirmEmployeeDelete(struct employeeList *temp)
 {
@@ -385,61 +415,6 @@ void deleteLastEmployee(struct employeeList *employeeHead)
 	free(temp);
 } // deleteLastEmployee()
 
-// search for employee by name and then delete them
-/*void deleteEmployeeByName(struct employeeList *employeeHead)
-{
-	int employeeId = 0, menuChoice = 0;
-
-	struct employeeList *temp;
-	struct employeeList *oldTemp;
-	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
-	oldTemp = (struct employeeList*)malloc(sizeof(struct employeeList));
-	temp = employeeHead;
-
-	printf("\nEnter Employee's ID: ");
-	fflush(stdin);
-	scanf("%d", &employeeId);
-
-	while (temp != NULL)  // goes to the last employee
-	{							// while keeping track of the second last employee
-		if (temp->employeeInfo.id == employeeId)
-		{
-			printf("\nEmployee Found.\n");
-			printEmployeeDetails(temp);
-			printf("\nAre You Sure You Want To Delete This Employee?\n");
-
-			printf("\n1.) Yes.");
-			printf("\n2.) No.\n");
-
-			do{
-				printf("\nEnter Option: ");
-
-				scanf("%d", &menuChoice);
-			} while (menuChoice < 1 || menuChoice > 2);
-
-			if (menuChoice == 1) // if yes
-			{
-				// point employee that is before the employee being deleted
-				// to the employee after it, keeping the linked list linked
-				oldTemp->next = temp->next;
-				free(temp);
-				printf("\nEmployee Deleted.\n");
-				return;
-			}
-			else // if no
-			{
-				printf("\nEmployee Not Deleted.\n");
-				return;
-			} // if
-		} // if
-
-		oldTemp = temp;
-		temp = temp->next;
-	} // while
-
-	printf("\nEmployee Not Found!\n");
-} // deleteEmployeeByName()*/
-
 // the code that prints the employee's details
 // just pass in the pointer that is pointing to 
 // a particular employee structure in the linked list
@@ -455,7 +430,6 @@ void printEmployeeDetails(struct employeeList *temp)
 		temp->employeeInfo.dateJoined.year);
 	printf("\nAnnual Salary: $%.2f.", temp->employeeInfo.annualSalary);
 	printf("\nE-mail: %s.\n", temp->employeeInfo.email);
-	
 } // printEmployeeDetails()
 
 // displays all of the employees in list
@@ -473,63 +447,7 @@ void displayAllEmployees(struct employeeList *employeeHead)
 		// move to next employee in list
 		temp = temp->next;
 	} // while
-} // displayEmployees()
-
-// finds an employee based on employee ID
-void searchEmployeeId(struct employeeList *employeeHead)
-{
-	int employeeId = 0;
-
-	struct employeeList *temp;
-	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
-	temp = employeeHead;
-
-	printf("\nEnter Employee's ID: ");
-	fflush(stdin);
-	scanf("%d", &employeeId);
-
-	while (temp != NULL)
-	{
-		if (temp->employeeInfo.id == employeeId)
-		{
-			printf("\nEmployee Found.\n");
-			printEmployeeDetails(temp);
-			return;
-		} // if
-
-		temp = temp->next;
-	} // while
-
-	printf("\nEmployee Not Found!\n");
-} // searchEmployeeId()
-
-// finds an employee based on employee name
-void searchEmployeeName(struct employeeList *employeeHead)
-{
-	char employeeName[25] = "name";
-	struct employeeList *temp;
-	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
-	temp = employeeHead;
-
-	printf("\nEnter Employee's Name: ");
-	fflush(stdin);
-	fgets(employeeName, 25, stdin);
-	cleanString(employeeName);
-
-	while (temp != NULL)
-	{
-		if (strncmp(temp->employeeInfo.name, employeeName, 25) == 0) // if they are equal
-		{
-			printf("\nEmployee Found.\n");
-			printEmployeeDetails(temp);
-			return;
-		} // if
-
-		temp = temp->next;
-	} // while
-
-	printf("\nEmployee Not Found!\n");
-} // searchEmployeeName()
+} // displayAllEmployees()
 
 // to handle users logining in
 // returns 1 if details are correct, 0 if uncorrect

@@ -63,13 +63,9 @@ void initialiseFirstEmployee(struct employeeList *employeeHead);
 void addEmployee(struct employeeList **employeeHeadPtr, struct employeeList *employeeHead);
 void displayEmployeeDetails(struct employeeList *employeeHead);
 void deleteEmployee(struct employeeList **employeeHeadPtr, struct employeeList *employeeHead);
-void deleteEmployeeById(struct employeeList **employeeHeadPtr, struct employeeList *employeeHead);
-void deleteEmployeeByName(struct employeeList *employeeHead);
 int confirmEmployeeDelete(struct employeeList *temp);
 void deleteFirstEmployee(struct employeeList **employeeHead);
 void displayAllEmployees(struct employeeList *employeeHead);
-void searchEmployeeId(struct employeeList *employeeHead);
-void searchEmployeeName(struct employeeList *employeeHead);
 void printEmployeeDetails(struct employeeList *temp);
 
 // loading users from file
