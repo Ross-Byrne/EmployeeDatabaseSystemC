@@ -88,7 +88,7 @@ void main()
 		case 1: // add employee
 			printf("\nAdd Employee.\n");
 
-			addEmployee(employeeHead);
+			addEmployee(&employeeHead, employeeHead);
 			break;
 		case 2: // display employee details
 			printf("\nDisplay Employee Details.\n");
@@ -101,7 +101,7 @@ void main()
 		case 4: // delete employee
 			printf("\nDelete Employee.\n");
 			
-			deleteEmployee(employeeHead);
+			deleteEmployee(&employeeHead, employeeHead);
 			break;
 		case 5: // display employees by department
 			printf("\nDisplay Employees by Department.\n");
