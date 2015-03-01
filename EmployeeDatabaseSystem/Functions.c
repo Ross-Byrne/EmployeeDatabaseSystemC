@@ -202,7 +202,7 @@ void deleteEmployee(struct employeeList **employeeHeadPtr, struct employeeList *
 } // deleteEmployee()
 
 // search for the employee by their id num and then delete them
-void deleteEmployeeById(struct employeeList **employeeHeadPtr, struct employeeList *employeeHead) // deleting item in the middile of linked list
+void deleteEmployeeById(struct employeeList **employeeHeadPtr, struct employeeList *employeeHead)
 {
 	if (employeeHead == NULL) // if linked list of employees is empty
 	{
@@ -225,10 +225,29 @@ void deleteEmployeeById(struct employeeList **employeeHeadPtr, struct employeeLi
 		fflush(stdin);
 		scanf("%d", &employeeId);
 
-		if (temp != NULL && temp->employeeInfo.id == employeeId && oldTemp == NULL) // if it's the first item
+		// if it's the first item
+		if (temp->employeeInfo.id == employeeId && oldTemp == NULL) 
 		{
-			deleteFirstEmployee(employeeHeadPtr);
-			return;
+			// code to confirm if you want to delete the employee
+			// returns 1 if yes - 0 if no
+			if (confirmEmployeeDelete(temp) == 1) // if yes
+			{
+				// point temp at the start of the list
+				temp = *employeeHeadPtr;
+
+				// point the start of the list pointer to the next item in the list
+				// because that will now be the start of the list
+				*employeeHeadPtr = temp->next;
+				free(temp);
+
+				printf("\nEmployee Deleted.\n");
+				return;
+			}
+			else // if no
+			{
+				printf("\nEmployee Not Deleted.\n");
+				return;
+			} // if
 		} // if
 
 		// goes to the last employee
@@ -238,26 +257,17 @@ void deleteEmployeeById(struct employeeList **employeeHeadPtr, struct employeeLi
 			// if not the first or last employee in list
 			if (temp->employeeInfo.id == employeeId && oldTemp != NULL)
 			{
-				printf("\nEmployee Found.\n");
-				printEmployeeDetails(temp);
-				printf("\nAre You Sure You Want To Delete This Employee?\n");
-
-				printf("\n1.) Yes.");
-				printf("\n2.) No.\n");
-
-				do{
-					printf("\nEnter Option: ");
-
-					scanf("%d", &menuChoice);
-				} while (menuChoice < 1 || menuChoice > 2);
-
-				if (menuChoice == 1) // if yes
+				// code to confirm if you want to delete the employee
+				// returns 1 if yes - 0 if no
+				if (confirmEmployeeDelete(temp) == 1) // if yes
 				{
 					// point employee that is before the employee being deleted
 					// to the employee after it, keeping the linked list linked
 					oldTemp->next = temp->next;
 					free(temp);
+
 					printf("\nEmployee Deleted.\n");
+					return;
 				}
 				else // if no
 				{
@@ -271,17 +281,50 @@ void deleteEmployeeById(struct employeeList **employeeHeadPtr, struct employeeLi
 			temp = temp->next; // the next item in list is now the current item
 		} // while
 
-		if (temp->employeeInfo.id == employeeId && temp->next == NULL) // if last employee in list
+		// if last employee in list
+		if (temp->employeeInfo.id == employeeId && temp->next == NULL) 
 		{
-			// delete the last employee
-			oldTemp->next = NULL; // tell the item before current item not to point to anything
-			free(temp); // delete employee
-			return;
+			// code to confirm if you want to delete the employee
+			// returns 1 if yes - 0 if no
+			if (confirmEmployeeDelete(temp) == 1) // if yes
+			{
+				// tell the item before current item not to point to anything
+				oldTemp->next = NULL; 
+				free(temp); // delete employee
+
+				printf("\nEmployee Deleted.\n");
+				return;
+			}
+			else // if no
+			{
+				printf("\nEmployee Not Deleted.\n");
+				return;
+			} // if
 		} // if
 
 		printf("\nEmployee Not Found!\n");
 	} // if
 } // deleteEmployeeById()
+
+int confirmEmployeeDelete(struct employeeList *temp)
+{
+	int employeeId = 0, menuChoice = 0;
+
+	printf("\nEmployee Found.\n");
+	printEmployeeDetails(temp);
+	printf("\nAre You Sure You Want To Delete This Employee?\n");
+
+	printf("\n1.) Yes.");
+	printf("\n2.) No.\n");
+
+	do{
+		printf("\nEnter Option: ");
+
+		scanf("%d", &menuChoice);
+	} while (menuChoice < 1 || menuChoice > 2);
+
+	return menuChoice;
+} // confirmEmployeeDelete()
 
 void deleteFirstEmployee(struct employeeList **employeeHead)
 {
