@@ -62,11 +62,9 @@ void printMainEmployeeMenu();
 void initialiseFirstEmployee(struct employeeList *employeeHead);
 void addEmployee(struct employeeList **employeeHeadPtr, struct employeeList *employeeHead);
 void displayEmployeeDetails(struct employeeList *employeeHead);
+void updateEmployeeDetails(struct employeeList *employeeHead);
 void deleteEmployee(struct employeeList **employeeHeadPtr, struct employeeList *employeeHead);
-int confirmEmployeeDelete(struct employeeList *temp);
-void deleteFirstEmployee(struct employeeList **employeeHead);
 void displayAllEmployees(struct employeeList *employeeHead);
-void printEmployeeDetails(struct employeeList *temp);
 
 // loading users from file
 void loadUsers(struct loginUsers *loginHead);
@@ -79,3 +77,6 @@ int login(struct loginUsers *loginHead);
 
 // Other Functions
 void cleanString(char *temp);
+int confirmEmployeeDelete(struct employeeList *temp);
+int searchEmployeeByIdOrName();
+void printEmployeeDetails(struct employeeList *temp);

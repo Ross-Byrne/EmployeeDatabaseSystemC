@@ -98,6 +98,8 @@ void main()
 			break;
 		case 3: // update employee
 			printf("\nUpdate Employee.\n");
+
+			updateEmployeeDetails(employeeHead);
 			break;
 		case 4: // delete employee
 			printf("\nDelete Employee.\n");
