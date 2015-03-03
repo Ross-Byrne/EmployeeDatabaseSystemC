@@ -68,8 +68,7 @@ void displayAllEmployees(struct employeeList *employeeHead);
 
 // loading users from file
 void loadUsers(struct loginUsers *loginHead);
-void addFirstUser(struct loginUsers *loginHead, char user[25], char pass[25]);
-void addUser(struct loginUsers *loginHead, char user[25], char pass[25]);
+void addLoginUser(struct loginUsers *loginHead, char user[25], char pass[25]);
 void displayUsers(struct loginUsers *loginHead);
 
 // login validation

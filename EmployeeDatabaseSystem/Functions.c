@@ -526,42 +526,41 @@ int login(struct loginUsers *loginHead)
 	return 0;
 } // searchLoginUser()
 
-// add first user to linked list
-void addFirstUser(struct loginUsers *loginHead, char user[25], char pass[25])
-{
-	// make a temp node
-	struct loginUsers *temp;
-	temp = (struct loginUsers*)malloc(sizeof(struct loginUsers));
-	temp = loginHead; // make it point at start of linked list
-
-	strncpy_s(temp->username, 25, user, 25);
-	strncpy_s(temp->password, 25, pass, 25);
-} // addFirstUser()
-
 // adds a login user to the login user linked list
-void addUser(struct loginUsers *loginHead, char user[25], char pass[25])
+void addLoginUser(struct loginUsers *loginHead, char user[25], char pass[25])
 {
 	// make a temp node
 	struct loginUsers *temp;
 	temp = (struct loginUsers*)malloc(sizeof(struct loginUsers));
 	temp = loginHead; // make it point at start of linked list
 
-	while (temp->next != NULL) // go to the last node
+	// if first login user is default, override it 
+	if (strcmp(temp->username, "default", 25) == 0)
 	{
-		temp = temp->next;
-	} // while
+		// overrides default
+		strncpy_s(temp->username, 25, user, 25);
+		strncpy_s(temp->password, 25, pass, 25);
+	}
+	else
+	{
+		// go to the last item in list
+		while (temp->next != NULL)
+		{
+			temp = temp->next;
+		} // while
 
-	// make the new user & allocate memory for it
-	struct loginUsers *newUser;
-	newUser = (struct loginUsers*)malloc(sizeof(struct loginUsers));
+		// make the new user & allocate memory for it
+		struct loginUsers *newUser;
+		newUser = (struct loginUsers*)malloc(sizeof(struct loginUsers));
 
-	// adds user details
-	strncpy_s(newUser->username, 25, user, 25);
-	strncpy_s(newUser->password, 25, pass, 25);
+		// adds user details
+		strncpy_s(newUser->username, 25, user, 25);
+		strncpy_s(newUser->password, 25, pass, 25);
 
-	newUser->next = NULL; // new user doesn't point to anything
-	temp->next = newUser; // adds new user to end of linked list
-} // addUser()
+		newUser->next = NULL; // new user doesn't point to anything
+		temp->next = newUser; // adds new user to end of linked list
+	} // if
+} // addLoginUser()
 
 // displays all of the users in list
 void displayUsers(struct loginUsers *loginHead)
@@ -585,7 +584,7 @@ void loadUsers(struct loginUsers *loginHead)
 
 	FILE *fPtr = NULL;
 	int i = 0;
-	char user[25] = "user", pass[25] = "pass";
+	char user[25] = "EOF", pass[25] = "pass";
 
 	fPtr = fopen(USER_LOGIN, READMODE);
 	if (fPtr == NULL)
@@ -595,17 +594,19 @@ void loadUsers(struct loginUsers *loginHead)
 	else
 	{
 		// save values from text file to variables
+		// initial read
+		fscanf(fPtr, "%s", user);
 
-		// add first user to the linked list
-		fscanf(fPtr, "%s %s", user, pass);
-		addFirstUser(loginHead, user, pass);
-		
-		// add the rest
-		fscanf(fPtr, "%s %s", user, pass);
-		addUser(loginHead, user, pass);
-		
-		fscanf(fPtr, "%s %s", user, pass);
-		addUser(loginHead, user, pass);
+		// keeps reading until end of file
+		while (strncmp(user, "EOF", 25) != 0) 
+		{
+			fscanf(fPtr, "%s", pass);
+
+			// adds a login user to linked list
+			addLoginUser(loginHead, user, pass);
+
+			fscanf(fPtr, "%s", user);
+		} // while
 		
 		//then close the file
 		fclose(fPtr);
