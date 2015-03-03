@@ -149,6 +149,8 @@ void addEmployee(struct employeeList **employeeHeadPtr, struct employeeList *emp
 		newEmployee->next = NULL; // new employee doesn't point to anything
 		temp->next = newEmployee; // adds new employee to end of linked list
 	} // if
+
+	//sortEmployeeList(employeeHeadPtr, employeeHead);
 } // addEmployee()
 
 // finds an employee based on employee ID or name
@@ -474,6 +476,78 @@ void printEmployeeDetails(struct employeeList *temp)
 	printf("\nE-mail: %s.\n", temp->employeeInfo.email);
 } // printEmployeeDetails()
 
+void sortEmployeeList(struct employeeList **employeeHeadPtr, struct employeeList *employeeHead)
+{
+	if (employeeHead == NULL) // if linked list of employees is empty
+	{
+		// don't sort
+	}
+	else // if more then one
+	{
+		int swapped = 0;
+		struct employeeList *temp;
+		struct employeeList *oldTemp;
+		struct employeeList *next = NULL;
+
+		temp = (struct employeeList*)malloc(sizeof(struct employeeList));
+		oldTemp = (struct employeeList*)malloc(sizeof(struct employeeList));
+		next = (struct employeeList*)malloc(sizeof(struct employeeList));
+
+		oldTemp = NULL; // doesn't point at anything yet
+		temp = employeeHead; // point temp at start of linked list
+		next = temp->next; // the employee after the current one
+
+		do{
+			temp = employeeHead;
+			swapped = 0;
+
+			// if it's the first item
+		/*	if ((temp->employeeInfo.id > next->employeeInfo.id) && oldTemp == NULL && temp->next != NULL)
+			{
+				// point temp at the start of the list
+				//temp = *employeeHeadPtr;
+				next = temp->next;
+
+				temp->next = next->next;
+				next->next = temp;
+
+				*employeeHeadPtr = next;
+
+				swapped = 1;
+			} // if*/
+
+			// goes to the last employee
+			// while keeping track of the second last employee
+			while (temp->next != NULL)
+			{
+				
+
+				// if not the first or last employee in list
+				if ((temp->employeeInfo.id > next->employeeInfo.id) && oldTemp != NULL)
+				{
+					oldTemp->next = next;
+					temp->next = next->next;
+					next->next = temp;
+
+					swapped = 1;
+				} // if
+
+				// moving to next item in list
+				oldTemp = temp; // the current item is now oldTemp
+				temp = next; // the next item in list is now the current item
+				next = next->next; // keeps track of next item in list
+			} // while
+		} while (swapped != 0);
+
+		/*// if last employee in list
+		if ((temp->employeeInfo.id == employeeId || strncmp(temp->employeeInfo.name, employeeName, 25) == 0) && temp->next == NULL)
+		{
+			
+		} // if*/
+
+	} // if
+} // sortEmployeeList
+
 // displays all of the employees in list
 void displayAllEmployees(struct employeeList *employeeHead)
 {
@@ -524,7 +598,7 @@ int login(struct loginUsers *loginHead)
 
 	printf("\nLogin Unsuccessful!\n"); // invalid login
 	return 0;
-} // searchLoginUser()
+} // login()
 
 // adds a login user to the login user linked list
 void addLoginUser(struct loginUsers *loginHead, char user[25], char pass[25])
