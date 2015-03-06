@@ -19,7 +19,8 @@ void main()
 	employeeHead->next = NULL; // no other node yet
 
 	// initialise first employee
-	initialiseFirstEmployee(employeeHead);
+	//initialiseFirstEmployee(employeeHead);
+	strncpy_s(employeeHead->employeeInfo.name, 25, "default", 25);
 
 	// initialise first login user
 	strncpy_s(loginHead->username, 25, "default", 25);
@@ -29,6 +30,9 @@ void main()
 
 	// loads the user login details into the program
 	loadUsers(loginHead);
+
+	//loads employees from file into linked list
+	loadEmployees(employeeHead);
 
 	while (endProgram != 99) // Login loop
 	{
@@ -120,6 +124,9 @@ void main()
 			break;
 		} // switch
 	} // while
+
+	// saves employees in database
+	saveEmployees(employeeHead);
 
 	printf("\n\nProgram ended.\n\n");
 	system("pause");

@@ -36,6 +36,37 @@ void cleanString(char *temp)
 	} // if
 } // cleanString()
 
+// replaces space char with underscore char to make
+// reading from text file easier
+// enter 1 to replace spaces and 0 to replace underscores
+void editString(char *temp, int num)
+{
+	int i = 0;
+
+	if (num == 1)
+	{
+		// checks for space char and replaces with '_' underscore char
+		for (i = 0; i < strlen(temp) - 1; i++)
+		{
+			if (temp[i] == ' ')
+			{
+				temp[i] = '_';
+			} // if
+		} // for
+	}
+	else
+	{
+		// checks for underscore char and replaces with ' ' space char
+		for (i = 0; i < strlen(temp) - 1; i++)
+		{
+			if (temp[i] == '_')
+			{
+				temp[i] = ' ';
+			} // if
+		} // for
+	}
+} // editString()
+
 // adds values for first employee to initialise the linked list
 void initialiseFirstEmployee(struct employeeList *temp)
 {
@@ -501,26 +532,24 @@ void sortEmployeeList(struct employeeList **employeeHeadPtr, struct employeeList
 			temp = employeeHead;
 			swapped = 0;
 
-			// if it's the first item
-		/*	if ((temp->employeeInfo.id > next->employeeInfo.id) && oldTemp == NULL && temp->next != NULL)
-			{
-				// point temp at the start of the list
-				//temp = *employeeHeadPtr;
-				next = temp->next;
-
-				temp->next = next->next;
-				next->next = temp;
-
-				*employeeHeadPtr = next;
-
-				swapped = 1;
-			} // if*/
-
 			// goes to the last employee
 			// while keeping track of the second last employee
 			while (temp->next != NULL)
 			{
-				
+				// if it's the first item
+				if ((temp->employeeInfo.id > next->employeeInfo.id) && oldTemp == NULL && temp->next != NULL)
+				{
+					// point temp at the start of the list
+					//temp = *employeeHeadPtr;
+					next = temp->next;
+
+					temp->next = next->next;
+					next->next = temp;
+
+					*employeeHeadPtr = next;
+
+					swapped = 1;
+				} // if
 
 				// if not the first or last employee in list
 				if ((temp->employeeInfo.id > next->employeeInfo.id) && oldTemp != NULL)
@@ -532,19 +561,24 @@ void sortEmployeeList(struct employeeList **employeeHeadPtr, struct employeeList
 					swapped = 1;
 				} // if
 
+				// if last employee in list
+				if ((temp->employeeInfo.id > next->employeeInfo.id) && next->next == NULL)
+				{
+					oldTemp->next = next;
+					//temp->next = NULL;
+					next->next = temp;
+
+					swapped = 1;
+				} // if
+
 				// moving to next item in list
 				oldTemp = temp; // the current item is now oldTemp
 				temp = next; // the next item in list is now the current item
 				next = next->next; // keeps track of next item in list
 			} // while
-		} while (swapped != 0);
 
-		/*// if last employee in list
-		if ((temp->employeeInfo.id == employeeId || strncmp(temp->employeeInfo.name, employeeName, 25) == 0) && temp->next == NULL)
-		{
 			
-		} // if*/
-
+		} while (swapped != 0);
 	} // if
 } // sortEmployeeList
 
@@ -691,5 +725,140 @@ void loadUsers(struct loginUsers *loginHead)
 	} // if
 } // loadUsers()
 
+// loads employees from file and into employee linked list
+void loadEmployees(struct employeeList *loginHead)
+{
+	// EOF marker is 0
+	FILE *fPtr = NULL;
+	int i = 0;
+
+	// make a temp node
+	struct employeeList *temp;
+	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
+	temp = loginHead; // make it point at start of linked list
+
+	fPtr = fopen(EMPLOYEE_DATA, READMODE);
+	if (fPtr == NULL)
+	{
+		printf("\n\nCould Not open file '%s'.\n", EMPLOYEE_DATA);
+	}
+	else
+	{
+		// save values from text file to variables
+		// initial read
+		fscanf(fPtr, "%d", &i);
+
+		// keeps reading until end of file
+		while (i != 0)
+		{
+			// if first employee is default, override it 
+			if (strcmp(temp->employeeInfo.name, "default", 25) == 0)
+			{
+				// overrides default
+				temp->employeeInfo.id = i;
+				fscanf(fPtr, "%s", temp->employeeInfo.name);
+				fscanf(fPtr, "%s", temp->employeeInfo.address);
+				fscanf(fPtr, "%s", temp->employeeInfo.department);
+				fscanf(fPtr, "%d %d %d", &temp->employeeInfo.dateJoined.day,
+					&temp->employeeInfo.dateJoined.month,
+					&temp->employeeInfo.dateJoined.year);
+				fscanf(fPtr, "%f", &temp->employeeInfo.annualSalary);
+				fscanf(fPtr, "%s", temp->employeeInfo.email);
+
+				// make the strings look nice again :P
+				editString(temp->employeeInfo.name, 0); // 0 to replace underscores
+				editString(temp->employeeInfo.address, 0);
+				editString(temp->employeeInfo.department, 0);
+			}
+			else // add to end of list
+			{
+				// go to the last item in list
+				while (temp->next != NULL)
+				{
+					temp = temp->next;
+				} // while
+
+				// make the new user & allocate memory for it
+				struct employeeList *newUser;
+				newUser = (struct employeeList*)malloc(sizeof(struct employeeList));
+
+				// adds employee details
+				newUser->employeeInfo.id = i;
+				fscanf(fPtr, "%s", newUser->employeeInfo.name);
+				fscanf(fPtr, "%s", newUser->employeeInfo.address);
+				fscanf(fPtr, "%s", newUser->employeeInfo.department);
+				fscanf(fPtr, "%d %d %d", &newUser->employeeInfo.dateJoined.day,
+					&newUser->employeeInfo.dateJoined.month,
+					&newUser->employeeInfo.dateJoined.year);
+				fscanf(fPtr, "%f", &newUser->employeeInfo.annualSalary);
+				fscanf(fPtr, "%s", newUser->employeeInfo.email);
+
+				newUser->next = NULL; // new employee doesn't point to anything
+				temp->next = newUser; // adds new employee to end of linked list
+
+				// make the strings look nice again :P
+				editString(newUser->employeeInfo.name, 0); // 0 to replace underscores
+				editString(newUser->employeeInfo.address, 0);
+				editString(newUser->employeeInfo.department, 0);
+			} // if
+
+			// checks again for eof
+			fscanf(fPtr, "%d", &i);
+		} // while
+
+		//then close the file
+		fclose(fPtr);
+	} // if
+} // loadEmployees()
+
+// saves employees from employee linked list to a file
+void saveEmployees(struct employeeList *employeeHead)
+{
+	printf("\nSaving Employees to file\n");
+
+	FILE *fPtr = NULL;
+
+	// open file
+	fPtr = fopen(EMPLOYEE_DATA, WRITEMODE);
+	if (fPtr == NULL)
+	{
+		printf("\n\n\tCould Not open file\n");
+	}
+	else
+	{
+		struct employeeList *temp;
+		temp = (struct employeeList*)malloc(sizeof(struct employeeList));
+		temp = employeeHead; // points temp at start of linked list
+
+		while (temp != NULL)
+		{
+			// edit strings by replacing spaces with underscores
+			// so they can be read from file easier
+			editString(temp->employeeInfo.name, 1); // 1 to replace spaces
+			editString(temp->employeeInfo.address, 1);
+			editString(temp->employeeInfo.department, 1);
+
+			// Saves employee details to file
+			fprintf(fPtr, "%d\n", temp->employeeInfo.id);
+			fprintf(fPtr, "%s\n", temp->employeeInfo.name);
+			fprintf(fPtr, "%s\n", temp->employeeInfo.address);
+			fprintf(fPtr, "%s\n", temp->employeeInfo.department);
+			fprintf(fPtr, "%d %d %d\n", temp->employeeInfo.dateJoined.day,
+				temp->employeeInfo.dateJoined.month,
+				temp->employeeInfo.dateJoined.year);
+			fprintf(fPtr, "%.2f\n", temp->employeeInfo.annualSalary);
+			fprintf(fPtr, "%s\n", temp->employeeInfo.email);
+
+			// move to next employee in list
+			temp = temp->next;
+		} // while
+
+		// print eof at end of the file. EOF = 0
+		fprintf(fPtr, "%d\n", 0);
+
+		// close the file
+		fclose(fPtr);
+	} // if
+} // saveEmployees()
 
 
