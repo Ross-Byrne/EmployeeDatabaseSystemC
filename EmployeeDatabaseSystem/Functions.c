@@ -89,7 +89,12 @@ void addEmployee(struct employeeList **employeeHeadPtr, struct employeeList *emp
 
 	// make a temp node
 	struct employeeList *temp;
+	struct employeeList *oldTemp;
+
 	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
+	oldTemp = (struct employeeList*)malloc(sizeof(struct employeeList));
+
+	oldTemp = NULL;
 	temp = employeeHead; // make it point at start of linked list
 	
 	if (employeeHead == NULL) // if list is empty
@@ -97,16 +102,10 @@ void addEmployee(struct employeeList **employeeHeadPtr, struct employeeList *emp
 		// flag employee as being first in list
 		firstEmployee = 1;
 	}
-	else // if list isn't empty - go to the end of it
+	else // if list isn't empty
 	{
-		// flag employee as not being first in list
+		// flag employee as not being first in empty list
 		firstEmployee = 0;
-
-		// go to the last item in list
-		while (temp->next != NULL) 
-		{
-			temp = temp->next;
-		} // while
 	} // if
 
 	// make the new employee & allocate memory for it
@@ -169,7 +168,7 @@ void addEmployee(struct employeeList **employeeHeadPtr, struct employeeList *emp
 	printf("\nEmployee Added.\n");
 	printEmployeeDetails(newEmployee);
 
-	if (firstEmployee == 1) // if employee is first in list
+	if (firstEmployee == 1) // if employee is first in empty list
 	{
 		// make the new employee the head
 		newEmployee->next = NULL; // new employee doesn't point to anything
@@ -177,11 +176,44 @@ void addEmployee(struct employeeList **employeeHeadPtr, struct employeeList *emp
 	}
 	else // if firstEmployee == 0 - is't first
 	{
-		newEmployee->next = NULL; // new employee doesn't point to anything
-		temp->next = newEmployee; // adds new employee to end of linked list
-	} // if
+		// adds employees into list in ascending order by id
+		// checks for employee id bigger then one entered
+		// and adds employee into list before it - keeping list ordered
+		while (temp->next != NULL)
+		{
+			// if temp is head
+			if (temp->employeeInfo.id > newEmployee->employeeInfo.id && oldTemp == NULL)
+			{
+				*employeeHeadPtr = newEmployee;
+				newEmployee->next = temp;
+				return;
+			} // if
 
-	//sortEmployeeList(employeeHeadPtr, employeeHead);
+			// if temp is not head
+			if (temp->employeeInfo.id > newEmployee->employeeInfo.id && oldTemp != NULL)
+			{
+				oldTemp->next = newEmployee;
+				newEmployee->next = temp;
+				return;
+			} // if
+
+			oldTemp = temp;
+			temp = temp->next;
+		} // while
+
+		// Adding newEmployee before last item in linked list
+		if (temp->employeeInfo.id > newEmployee->employeeInfo.id)
+		{
+			oldTemp->next = newEmployee;
+			newEmployee->next = temp;
+			return;
+		}
+		else // if last item isn't bigger, just add to end of linked list
+		{
+			newEmployee->next = NULL; // new employee doesn't point to anything
+			temp->next = newEmployee; // adds new employee to end of linked list
+		} // if	
+	} // if
 } // addEmployee()
 
 // finds an employee based on employee ID or name
@@ -506,81 +538,6 @@ void printEmployeeDetails(struct employeeList *temp)
 	printf("\nAnnual Salary: $%.2f.", temp->employeeInfo.annualSalary);
 	printf("\nE-mail: %s.\n", temp->employeeInfo.email);
 } // printEmployeeDetails()
-
-void sortEmployeeList(struct employeeList **employeeHeadPtr, struct employeeList *employeeHead)
-{
-	if (employeeHead == NULL) // if linked list of employees is empty
-	{
-		// don't sort
-	}
-	else // if more then one
-	{
-		int swapped = 0;
-		struct employeeList *temp;
-		struct employeeList *oldTemp;
-		struct employeeList *next = NULL;
-
-		temp = (struct employeeList*)malloc(sizeof(struct employeeList));
-		oldTemp = (struct employeeList*)malloc(sizeof(struct employeeList));
-		next = (struct employeeList*)malloc(sizeof(struct employeeList));
-
-		oldTemp = NULL; // doesn't point at anything yet
-		temp = employeeHead; // point temp at start of linked list
-		next = temp->next; // the employee after the current one
-
-		do{
-			temp = employeeHead;
-			swapped = 0;
-
-			// goes to the last employee
-			// while keeping track of the second last employee
-			while (temp->next != NULL)
-			{
-				// if it's the first item
-				if ((temp->employeeInfo.id > next->employeeInfo.id) && oldTemp == NULL && temp->next != NULL)
-				{
-					// point temp at the start of the list
-					//temp = *employeeHeadPtr;
-					next = temp->next;
-
-					temp->next = next->next;
-					next->next = temp;
-
-					*employeeHeadPtr = next;
-
-					swapped = 1;
-				} // if
-
-				// if not the first or last employee in list
-				if ((temp->employeeInfo.id > next->employeeInfo.id) && oldTemp != NULL)
-				{
-					oldTemp->next = next;
-					temp->next = next->next;
-					next->next = temp;
-
-					swapped = 1;
-				} // if
-
-				// if last employee in list
-				if ((temp->employeeInfo.id > next->employeeInfo.id) && next->next == NULL)
-				{
-					oldTemp->next = next;
-					//temp->next = NULL;
-					next->next = temp;
-
-					swapped = 1;
-				} // if
-
-				// moving to next item in list
-				oldTemp = temp; // the current item is now oldTemp
-				temp = next; // the next item in list is now the current item
-				next = next->next; // keeps track of next item in list
-			} // while
-
-			
-		} while (swapped != 0);
-	} // if
-} // sortEmployeeList
 
 // displays all of the employees in list
 void displayAllEmployees(struct employeeList *employeeHead)

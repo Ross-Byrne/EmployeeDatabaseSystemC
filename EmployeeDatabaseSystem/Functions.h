@@ -84,5 +84,4 @@ void cleanString(char *temp);
 int confirmEmployeeDelete(struct employeeList *temp);
 int searchEmployeeByIdOrName();
 void printEmployeeDetails(struct employeeList *temp);
-void sortEmployeeList(struct employeeList **employeeHeadPtr, struct employeeList *temp);
 void editString(char *temp, int num);
