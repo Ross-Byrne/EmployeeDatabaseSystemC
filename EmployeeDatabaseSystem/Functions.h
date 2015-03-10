@@ -9,6 +9,7 @@
 
 // File Reading and Writing
 #define USER_LOGIN "UserLogin.txt"
+#define EMPLOYEE_DATA "EmployeeData.txt"
 #define WRITEMODE "w"
 #define READMODE "r"
 #define APPENDMODE "a"
@@ -34,7 +35,7 @@ typedef struct
 	char department[25];
 	DATE dateJoined;
 	float annualSalary;
-	char email[25]; // must contain '.', '@' and '.com'
+	char email[35]; // must contain '.', '@' and '.com'
 }EMPLOYEE;
 
 // EMPLOYEE linked list node structure
@@ -58,16 +59,29 @@ struct loginUsers
 void printMainMenu();
 void printMainEmployeeMenu();
 
-// linked list Functions
-void addEmployee(struct employeeList *employeeHead);
-void displayEmployees(struct employeeList *employeeHead);
-void deleteEmployee(struct employeeList *employeeHead);
+// employee linked list Functions
+void initialiseFirstEmployee(struct employeeList *employeeHead);
+void addEmployee(struct employeeList **employeeHeadPtr, struct employeeList *employeeHead);
+void displayEmployeeDetails(struct employeeList *employeeHead);
+void updateEmployeeDetails(struct employeeList *employeeHead);
+void deleteEmployee(struct employeeList **employeeHeadPtr, struct employeeList *employeeHead);
+void displayAllEmployees(struct employeeList *employeeHead);
+
+// loading employees to and from file
+void loadEmployees(struct employeeList *loginHead);
+void saveEmployees(struct employeeList *employeeHead);
 
 // loading users from file
 void loadUsers(struct loginUsers *loginHead);
-void addFirstUser(struct loginUsers *loginHead, char user[25], char pass[25]);
-void addUser(struct loginUsers *loginHead, char user[25], char pass[25]);
+void addLoginUser(struct loginUsers *loginHead, char user[25], char pass[25]);
 void displayUsers(struct loginUsers *loginHead);
 
 // login validation
 int login(struct loginUsers *loginHead);
+
+// Other Functions
+void cleanString(char *temp);
+int confirmEmployeeDelete(struct employeeList *temp);
+int searchEmployeeByIdOrName();
+void printEmployeeDetails(struct employeeList *temp);
+void editString(char *temp, int num);

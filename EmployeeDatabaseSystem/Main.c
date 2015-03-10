@@ -19,7 +19,8 @@ void main()
 	employeeHead->next = NULL; // no other node yet
 
 	// initialise first employee
-	employeeHead->employeeInfo.id = 1111;
+	//initialiseFirstEmployee(employeeHead);
+	strncpy_s(employeeHead->employeeInfo.name, 25, "default", 25);
 
 	// initialise first login user
 	strncpy_s(loginHead->username, 25, "default", 25);
@@ -29,6 +30,9 @@ void main()
 
 	// loads the user login details into the program
 	loadUsers(loginHead);
+
+	//loads employees from file into linked list
+	loadEmployees(employeeHead);
 
 	while (endProgram != 99) // Login loop
 	{
@@ -47,12 +51,13 @@ void main()
 		switch (menuChoice)
 		{
 		case 1: // login
-	
+			// handles user login - makes sure login is valid
+			// returns 1 if valid, returns 0 is invalid
 			loginValid = login(loginHead);
 
 			if (loginValid == 1) // if valid
 			{
-				printf("\nMove to database\n");
+				printf("\n. . . Moving to database . . .\n");
 				menuChoice = 50; // means login was valid
 				endProgram = 99; // to exit while
 			} // if
@@ -70,6 +75,7 @@ void main()
 
 	while (endProgram != 99) // main program loop
 	{
+		menuChoice = 0;
 		// To make sure the number input is in the right range
 		do
 		{
@@ -86,28 +92,41 @@ void main()
 		{
 		case 1: // add employee
 			printf("\nAdd Employee.\n");
+
+			addEmployee(&employeeHead, employeeHead);
 			break;
 		case 2: // display employee details
 			printf("\nDisplay Employee Details.\n");
+
+			displayEmployeeDetails(employeeHead);
 			break;
 		case 3: // update employee
 			printf("\nUpdate Employee.\n");
+
+			updateEmployeeDetails(employeeHead);
 			break;
 		case 4: // delete employee
 			printf("\nDelete Employee.\n");
+			
+			deleteEmployee(&employeeHead, employeeHead);
 			break;
 		case 5: // display employees by department
 			printf("\nDisplay Employees by Department.\n");
+
+			displayAllEmployees(employeeHead);
 			break;
 		case 6: // employee report
 			printf("\nEmployee Report.\n");
 			break;
 		case 7: // exit
-			printf("\nExiting.\n");
+			printf("\n. . . Exiting . . .\n");
 			endProgram = 99;
 			break;
 		} // switch
 	} // while
+
+	// saves employees in database
+	saveEmployees(employeeHead);
 
 	printf("\n\nProgram ended.\n\n");
 	system("pause");
