@@ -570,14 +570,24 @@ void displayAllEmployees(struct employeeList *employeeHead, int employeeCount)
 		printf("\nElement %d is: %d\n", i, *(deptOrderRecPtr + i));
 	} // for
 
+	i = 0;
 	while (temp != NULL)
 	{
 		// display employee details
 		printEmployeeDetails(temp);
 		
+		*(deptOrderRecPtr + i) = temp->employeeInfo.id;
+
 		// move to next employee in list
 		temp = temp->next;
+
+		i++;
 	} // while
+
+	for (i = 0; i < employeeCount; ++i)
+	{
+		printf("\nElement %d is: %d\n", i, *(deptOrderRecPtr + i));
+	} // for
 } // displayAllEmployees()
 
 // to handle users logining in
