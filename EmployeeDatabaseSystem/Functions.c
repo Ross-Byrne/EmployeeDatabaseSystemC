@@ -540,11 +540,35 @@ void printEmployeeDetails(struct employeeList *temp)
 } // printEmployeeDetails()
 
 // displays all of the employees in list
-void displayAllEmployees(struct employeeList *employeeHead)
+void displayAllEmployees(struct employeeList *employeeHead, int employeeCount)
 {
+	int *deptOrderRecPtr, i;
 	struct employeeList *temp;
 	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
 	temp = employeeHead; // points temp at start of linked list
+
+	// create space for int array
+	deptOrderRecPtr = (int*)malloc(sizeof(int));
+
+	// creates the right amount of space to keep track
+	// of all employee id numbers
+	deptOrderRecPtr = (int*)realloc(deptOrderRecPtr, employeeCount*sizeof(int));
+
+	if (deptOrderRecPtr == NULL)
+	{
+		printf("Error! memory not allocated.");
+		return;
+	} // if
+
+	for (i = 0; i < employeeCount; ++i)
+	{
+		*(deptOrderRecPtr + i) = i;
+	} // for
+
+	for (i = 0; i < employeeCount; ++i)
+	{
+		printf("\nElement %d is: %d\n", i, *(deptOrderRecPtr + i));
+	} // for
 
 	while (temp != NULL)
 	{
@@ -600,7 +624,7 @@ void addLoginUser(struct loginUsers *loginHead, char user[25], char pass[25])
 	temp = loginHead; // make it point at start of linked list
 
 	// if first login user is default, override it 
-	if (strcmp(temp->username, "default", 25) == 0)
+	if (strncmp(temp->username, "default", 25) == 0)
 	{
 		// overrides default
 		strncpy_s(temp->username, 25, user, 25);
@@ -683,11 +707,11 @@ void loadUsers(struct loginUsers *loginHead)
 } // loadUsers()
 
 // loads employees from file and into employee linked list
-void loadEmployees(struct employeeList *loginHead)
+int loadEmployees(struct employeeList *loginHead)
 {
 	// EOF marker is 0
 	FILE *fPtr = NULL;
-	int i = 0;
+	int i = 0, count = 0;
 
 	// make a temp node
 	struct employeeList *temp;
@@ -709,7 +733,7 @@ void loadEmployees(struct employeeList *loginHead)
 		while (i != 0)
 		{
 			// if first employee is default, override it 
-			if (strcmp(temp->employeeInfo.name, "default", 25) == 0)
+			if (strncmp(temp->employeeInfo.name, "default", 25) == 0)
 			{
 				// overrides default
 				temp->employeeInfo.id = i;
@@ -726,6 +750,9 @@ void loadEmployees(struct employeeList *loginHead)
 				editString(temp->employeeInfo.name, 0); // 0 to replace underscores
 				editString(temp->employeeInfo.address, 0);
 				editString(temp->employeeInfo.department, 0);
+
+				// count employee
+				count++;
 			}
 			else // add to end of list
 			{
@@ -757,6 +784,9 @@ void loadEmployees(struct employeeList *loginHead)
 				editString(newUser->employeeInfo.name, 0); // 0 to replace underscores
 				editString(newUser->employeeInfo.address, 0);
 				editString(newUser->employeeInfo.department, 0);
+
+				// count employee
+				count++;
 			} // if
 
 			// checks again for eof
@@ -765,7 +795,10 @@ void loadEmployees(struct employeeList *loginHead)
 
 		//then close the file
 		fclose(fPtr);
+
+		return count;
 	} // if
+	return 0;
 } // loadEmployees()
 
 // saves employees from employee linked list to a file

@@ -6,7 +6,7 @@
 void main()
 {
 	// Variables
-	int endProgram, menuChoice, loginValid, i;
+	int endProgram, menuChoice, loginValid, i, employeeCount;
 
 	// listed list of login users
 	struct loginUsers *loginHead;
@@ -26,13 +26,13 @@ void main()
 	strncpy_s(loginHead->username, 25, "default", 25);
 
 	// Initialise Variables
-	endProgram = menuChoice = loginValid = i = 0;
+	endProgram = menuChoice = loginValid = i = employeeCount = 0;
 
 	// loads the user login details into the program
 	loadUsers(loginHead);
 
 	//loads employees from file into linked list
-	loadEmployees(employeeHead);
+	employeeCount = loadEmployees(employeeHead);
 
 	while (endProgram != 99) // Login loop
 	{
@@ -113,7 +113,7 @@ void main()
 		case 5: // display employees by department
 			printf("\nDisplay Employees by Department.\n");
 
-			displayAllEmployees(employeeHead);
+			displayAllEmployees(employeeHead, employeeCount);
 			break;
 		case 6: // employee report
 			printf("\nEmployee Report.\n");

@@ -65,10 +65,10 @@ void addEmployee(struct employeeList **employeeHeadPtr, struct employeeList *emp
 void displayEmployeeDetails(struct employeeList *employeeHead);
 void updateEmployeeDetails(struct employeeList *employeeHead);
 void deleteEmployee(struct employeeList **employeeHeadPtr, struct employeeList *employeeHead);
-void displayAllEmployees(struct employeeList *employeeHead);
+void displayAllEmployees(struct employeeList *employeeHead, int employeeCount);
 
 // loading employees to and from file
-void loadEmployees(struct employeeList *loginHead);
+int loadEmployees(struct employeeList *loginHead);
 void saveEmployees(struct employeeList *employeeHead);
 
 // loading users from file
