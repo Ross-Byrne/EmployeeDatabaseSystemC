@@ -540,54 +540,95 @@ void printEmployeeDetails(struct employeeList *temp)
 } // printEmployeeDetails()
 
 // displays all of the employees in list
-void displayAllEmployees(struct employeeList *employeeHead, int employeeCount)
+void displayAllEmployees(struct employeeList *employeeHead)
 {
-	int *deptOrderRecPtr, i;
+	int employeeCount, count, i, j, exists, finished = 0;
 	struct employeeList *temp;
+	char tempString1[25], tempString2[25];
 	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
 	temp = employeeHead; // points temp at start of linked list
 
-	// create space for int array
-	deptOrderRecPtr = (int*)malloc(sizeof(int));
+	// have an array of pointers to the employees
+	// add employees to array of pointers biggest to lowest
+	// print off array of pointers in reverse
 
-	// creates the right amount of space to keep track
-	// of all employee id numbers
-	deptOrderRecPtr = (int*)realloc(deptOrderRecPtr, employeeCount*sizeof(int));
-
-	if (deptOrderRecPtr == NULL)
-	{
-		printf("Error! memory not allocated.");
-		return;
-	} // if
-
-	for (i = 0; i < employeeCount; ++i)
-	{
-		*(deptOrderRecPtr + i) = i;
-	} // for
-
-	for (i = 0; i < employeeCount; ++i)
-	{
-		printf("\nElement %d is: %d\n", i, *(deptOrderRecPtr + i));
-	} // for
-
-	i = 0;
+	// count the num of employees
+	employeeCount = 0;
 	while (temp != NULL)
 	{
-		// display employee details
+		employeeCount++;
 		printEmployeeDetails(temp);
-		
-		*(deptOrderRecPtr + i) = temp->employeeInfo.id;
-
 		// move to next employee in list
 		temp = temp->next;
-
-		i++;
 	} // while
 
-	for (i = 0; i < employeeCount; ++i)
+	struct employeeList **orderedEmpArr = malloc(employeeCount * sizeof(struct employeeList *));
+
+	i = 0;
+	count = 0;
+	do {
+		// reset temp to start of linked list
+		temp = employeeHead;
+		strncpy(tempString1, "a", 2);
+
+		while (temp != NULL)
+		{
+			strncpy(tempString2, temp->employeeInfo.department, 25);
+			_strlwr(tempString2);
+
+			if (strncmp(tempString1, tempString2, 1) < 0) 
+			{ // if bigger
+				printf("Bigger");
+				for (j = 0; j < employeeCount; j++)
+				{
+					if (temp == orderedEmpArr[j])
+					{
+						printf("\nexists");
+						//printEmployeeDetails(temp);
+						exists = 1;
+					} // if
+					else
+					{
+						orderedEmpArr[i] = temp;
+						printEmployeeDetails(temp);
+						strncpy(tempString1, tempString2, 25);
+					}
+				} // for
+				
+				count++;
+			} // if
+
+			// if last
+		/*	if (strncmp(tempString1, tempString2, 1) > 0 && count == employeeCount-1)
+			{
+				orderedEmpArr[i] = temp;
+				printEmployeeDetails(temp);
+				count++;
+			}*/
+			// move to next employee in list
+			temp = temp->next;
+
+			
+		} // while
+		i++;
+		printf("%d", i);
+		if (i == employeeCount)
+		{
+			finished = 1;
+		} // if
+	} while (finished != 1);
+
+	/*printf("\n%d", orderedEmpArr[0]->employeeInfo.id);
+	printEmployeeDetails(orderedEmpArr[0]);
+	printf("\n%d", orderedEmpArr[1]->employeeInfo.id);*/
+	/*for (i = 0; i < employeeCount; i++)
 	{
-		printf("\nElement %d is: %d\n", i, *(deptOrderRecPtr + i));
-	} // for
+		printEmployeeDetails(orderedEmpArr[i]);
+	} // for*/
+
+	// display employee details
+	//printEmployeeDetails(temp);
+
 } // displayAllEmployees()
 
 // to handle users logining in
@@ -717,11 +758,11 @@ void loadUsers(struct loginUsers *loginHead)
 } // loadUsers()
 
 // loads employees from file and into employee linked list
-int loadEmployees(struct employeeList *loginHead)
+void loadEmployees(struct employeeList *loginHead)
 {
 	// EOF marker is 0
 	FILE *fPtr = NULL;
-	int i = 0, count = 0;
+	int i = 0;
 
 	// make a temp node
 	struct employeeList *temp;
@@ -760,9 +801,6 @@ int loadEmployees(struct employeeList *loginHead)
 				editString(temp->employeeInfo.name, 0); // 0 to replace underscores
 				editString(temp->employeeInfo.address, 0);
 				editString(temp->employeeInfo.department, 0);
-
-				// count employee
-				count++;
 			}
 			else // add to end of list
 			{
@@ -794,9 +832,6 @@ int loadEmployees(struct employeeList *loginHead)
 				editString(newUser->employeeInfo.name, 0); // 0 to replace underscores
 				editString(newUser->employeeInfo.address, 0);
 				editString(newUser->employeeInfo.department, 0);
-
-				// count employee
-				count++;
 			} // if
 
 			// checks again for eof
@@ -805,8 +840,6 @@ int loadEmployees(struct employeeList *loginHead)
 
 		//then close the file
 		fclose(fPtr);
-
-		return count;
 	} // if
 	return 0;
 } // loadEmployees()
