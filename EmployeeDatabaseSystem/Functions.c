@@ -542,93 +542,65 @@ void printEmployeeDetails(struct employeeList *temp)
 // displays all of the employees in list
 void displayAllEmployees(struct employeeList *employeeHead)
 {
-	int employeeCount, count, i, j, exists, finished = 0;
+	int employeeCount, i, j, exists;
 	struct employeeList *temp;
 	char tempString1[25], tempString2[25];
 	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
 	temp = employeeHead; // points temp at start of linked list
-
-	// have an array of pointers to the employees
-	// add employees to array of pointers biggest to lowest
-	// print off array of pointers in reverse
 
 	// count the num of employees
 	employeeCount = 0;
 	while (temp != NULL)
 	{
 		employeeCount++;
-		printEmployeeDetails(temp);
 		// move to next employee in list
 		temp = temp->next;
 	} // while
 
 	struct employeeList **orderedEmpArr = malloc(employeeCount * sizeof(struct employeeList *));
+	struct employeeList **orderedEmpTemp = malloc(sizeof(struct employeeList *));
 
 	i = 0;
-	count = 0;
 	do {
 		// reset temp to start of linked list
 		temp = employeeHead;
-		strncpy(tempString1, "a", 2);
+		strncpy(tempString1, "zzzzzzzzzzzzzzzzzzzzzzzzz", 25);
 
 		while (temp != NULL)
 		{
-			strncpy(tempString2, temp->employeeInfo.department, 25);
-			_strlwr(tempString2);
+			exists = 0;
+			// check if current employee is in array
+			for (j = 0; j < employeeCount; j++){
+				if (temp == orderedEmpArr[j]){
+					exists = 1;
+					break;
+				} // if
+			} // for
 
-			if (strncmp(tempString1, tempString2, 1) < 0) 
-			{ // if bigger
-				printf("Bigger");
-				for (j = 0; j < employeeCount; j++)
-				{
-					if (temp == orderedEmpArr[j])
-					{
-						printf("\nexists");
-						//printEmployeeDetails(temp);
-						exists = 1;
-					} // if
-					else
-					{
-						orderedEmpArr[i] = temp;
-						printEmployeeDetails(temp);
-						strncpy(tempString1, tempString2, 25);
-					}
-				} // for
-				
-				count++;
+			// if current emp isnt in array, continue
+			if (exists == 0){
+				strncpy(tempString2, temp->employeeInfo.department, 25);
+				_strlwr(tempString2);
+
+				if (strncmp(tempString1, tempString2, 25) > 0){
+					orderedEmpTemp = temp;
+					strncpy(tempString1, tempString2, 25);
+				} // if
 			} // if
-
-			// if last
-		/*	if (strncmp(tempString1, tempString2, 1) > 0 && count == employeeCount-1)
-			{
-				orderedEmpArr[i] = temp;
-				printEmployeeDetails(temp);
-				count++;
-			}*/
+	
 			// move to next employee in list
 			temp = temp->next;
-
-			
 		} // while
+
+		orderedEmpArr[i] = orderedEmpTemp;
 		i++;
-		printf("%d", i);
-		if (i == employeeCount)
-		{
-			finished = 1;
-		} // if
-	} while (finished != 1);
+	} while (i != employeeCount);
 
-	/*printf("\n%d", orderedEmpArr[0]->employeeInfo.id);
-	printEmployeeDetails(orderedEmpArr[0]);
-	printf("\n%d", orderedEmpArr[1]->employeeInfo.id);*/
-	/*for (i = 0; i < employeeCount; i++)
-	{
+	for (i = 0; i < employeeCount; i++){
 		printEmployeeDetails(orderedEmpArr[i]);
-	} // for*/
+	} // for
 
-	// display employee details
-	//printEmployeeDetails(temp);
-
+	free(orderedEmpArr);
 } // displayAllEmployees()
 
 // to handle users logining in
