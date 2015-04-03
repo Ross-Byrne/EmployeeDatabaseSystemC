@@ -539,7 +539,7 @@ void printEmployeeDetails(struct employeeList *temp)
 	printf("\nE-mail: %s.\n", temp->employeeInfo.email);
 } // printEmployeeDetails()
 
-// displays all of the employees in list
+// displays all of the employees in list by department
 void displayAllEmployees(struct employeeList *employeeHead)
 {
 	int employeeCount, i, j, exists;
@@ -557,6 +557,7 @@ void displayAllEmployees(struct employeeList *employeeHead)
 		temp = temp->next;
 	} // while
 
+	// array of pointers, pointing to employees in linkedlist
 	struct employeeList **orderedEmpArr = malloc(employeeCount * sizeof(struct employeeList *));
 	struct employeeList **orderedEmpTemp = malloc(sizeof(struct employeeList *));
 
@@ -591,17 +592,85 @@ void displayAllEmployees(struct employeeList *employeeHead)
 			// move to next employee in list
 			temp = temp->next;
 		} // while
-
+		
+		// add pointer to array of pointers
 		orderedEmpArr[i] = orderedEmpTemp;
 		i++;
 	} while (i != employeeCount);
 
+	// print employees based on department
 	for (i = 0; i < employeeCount; i++){
 		printEmployeeDetails(orderedEmpArr[i]);
 	} // for
 
 	free(orderedEmpArr);
 } // displayAllEmployees()
+
+void employeeReport(struct employeeList *employeeHead)
+{
+	int employeeCount, i, j;
+	struct employeeList *temp;
+	char tempString1[25], tempString2[25];
+	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
+	temp = employeeHead; // points temp at start of linked list
+
+	// count the num of employees
+	employeeCount = 0;
+	while (temp != NULL)
+	{
+		employeeCount++;
+		// move to next employee in list
+		temp = temp->next;
+	} // while
+
+	// array of pointers, pointing to employees in linkedlist
+	struct employeeList **orderedEmpArr = malloc(employeeCount * sizeof(struct employeeList *));
+	struct employeeList **orderedEmpTemp = malloc(sizeof(struct employeeList *));
+
+	i = 0;
+	do {
+		// reset temp to start of linked list
+		temp = employeeHead;
+		strncpy(tempString1, "zzzzzzzzzzzzzzzzzzzzzzzzz", 25);
+
+		while (temp != NULL)
+		{
+			exists = 0;
+			// check if current employee is in array
+			for (j = 0; j < employeeCount; j++){
+				if (temp == orderedEmpArr[j]){
+					exists = 1;
+					break;
+				} // if
+			} // for
+
+			// if current emp isnt in array, continue
+			if (exists == 0){
+				strncpy(tempString2, temp->employeeInfo.department, 25);
+				_strlwr(tempString2);
+
+				if (strncmp(tempString1, tempString2, 25) > 0){
+					orderedEmpTemp = temp;
+					strncpy(tempString1, tempString2, 25);
+				} // if
+			} // if
+
+			// move to next employee in list
+			temp = temp->next;
+		} // while
+
+		// add pointer to array of pointers
+		orderedEmpArr[i] = orderedEmpTemp;
+		i++;
+	} while (i != employeeCount);
+
+	// print employees based on department
+	for (i = 0; i < employeeCount; i++){
+		printEmployeeDetails(orderedEmpArr[i]);
+	} // for
+
+	free(orderedEmpArr);
+} // employeeReport()
 
 // to handle users logining in
 // returns 1 if details are correct, 0 if uncorrect

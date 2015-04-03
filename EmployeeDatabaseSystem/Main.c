@@ -117,6 +117,8 @@ void main()
 			break;
 		case 6: // employee report
 			printf("\nEmployee Report.\n");
+
+			employeeReport(employeeHead);
 			break;
 		case 7: // exit
 			printf("\n. . . Exiting . . .\n");

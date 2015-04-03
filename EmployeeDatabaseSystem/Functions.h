@@ -66,6 +66,7 @@ void displayEmployeeDetails(struct employeeList *employeeHead);
 void updateEmployeeDetails(struct employeeList *employeeHead);
 void deleteEmployee(struct employeeList **employeeHeadPtr, struct employeeList *employeeHead);
 void displayAllEmployees(struct employeeList *employeeHead);
+void employeeReport(struct employeeList *employeeHead);
 
 // loading employees to and from file
 void loadEmployees(struct employeeList *loginHead);
