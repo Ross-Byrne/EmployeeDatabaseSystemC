@@ -1,3 +1,10 @@
+13
+Bob
+Dylan
+Sales_&_Marketing
+10 2 1995
+45000.00
+bob.dylan@gmail.com
 1111
 Mike_Sullivan
 Galway,_Ireland
@@ -12,4 +19,11 @@ Research_&_Development
 31 8 1995
 40000.00
 john.smith@hotmail.com
+2138
+Ross_Byrne
+Galway._Ireland
+Research_&_Development
+15 8 2003
+30000.00
+ross.byrne@outlook.com
 0

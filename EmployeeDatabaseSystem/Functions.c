@@ -565,6 +565,7 @@ void displayAllEmployees(struct employeeList *employeeHead)
 	do {
 		// reset temp to start of linked list
 		temp = employeeHead;
+		// start comparing department string to highest possible string
 		strncpy(tempString1, "zzzzzzzzzzzzzzzzzzzzzzzzz", 25);
 
 		while (temp != NULL)
@@ -581,7 +582,7 @@ void displayAllEmployees(struct employeeList *employeeHead)
 			// if current emp isnt in array, continue
 			if (exists == 0){
 				strncpy(tempString2, temp->employeeInfo.department, 25);
-				_strlwr(tempString2);
+				_strlwr(tempString2); // convert to lower case
 
 				if (strncmp(tempString1, tempString2, 25) > 0){
 					orderedEmpTemp = temp;
@@ -596,11 +597,40 @@ void displayAllEmployees(struct employeeList *employeeHead)
 		// add pointer to array of pointers
 		orderedEmpArr[i] = orderedEmpTemp;
 		i++;
-	} while (i != employeeCount);
+	} while (i != employeeCount); 
+
+	// print name of first department
+	printf("\nDepartment: %s.\n", orderedEmpArr[0]->employeeInfo.department);
 
 	// print employees based on department
 	for (i = 0; i < employeeCount; i++){
-		printEmployeeDetails(orderedEmpArr[i]);
+
+		if (i + 1 != employeeCount){ // if not last employee
+
+			// if the next department after current one is different,
+			// print name of new department after current one
+			if (strncmp(orderedEmpArr[i]->employeeInfo.department, orderedEmpArr[i + 1]->employeeInfo.department, 25) != 0){
+				
+				printEmployeeDetails(orderedEmpArr[i]);
+				printf("\nDepartment: %s.\n", orderedEmpArr[i+1]->employeeInfo.department);
+			} 
+			else{ // if next department isn't different, dont print department name
+				printEmployeeDetails(orderedEmpArr[i]);
+			} // if
+		}
+		else // if last employee
+		{
+			// if last employee department is different to second last
+			// print name of department
+			if (strncmp(orderedEmpArr[i]->employeeInfo.department, orderedEmpArr[i - 1]->employeeInfo.department, 25) != 0){
+				printf("\nDepartment: %s.\n", orderedEmpArr[i]->employeeInfo.department);
+				printEmployeeDetails(orderedEmpArr[i]);
+			}
+			else // if the same department, just print employee details
+			{
+				printEmployeeDetails(orderedEmpArr[i]);
+			} // if
+		} // if
 	} // for
 
 	free(orderedEmpArr);
@@ -608,7 +638,7 @@ void displayAllEmployees(struct employeeList *employeeHead)
 
 void employeeReport(struct employeeList *employeeHead)
 {
-	int employeeCount, i, j;
+/*	int employeeCount, i, j;
 	struct employeeList *temp;
 	char tempString1[25], tempString2[25];
 	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
@@ -669,7 +699,7 @@ void employeeReport(struct employeeList *employeeHead)
 		printEmployeeDetails(orderedEmpArr[i]);
 	} // for
 
-	free(orderedEmpArr);
+	free(orderedEmpArr); */
 } // employeeReport()
 
 // to handle users logining in
