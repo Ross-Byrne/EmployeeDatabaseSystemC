@@ -621,7 +621,6 @@ void displayAllEmployees(struct employeeList *employeeHead)
 		else // if last employee
 		{
 			printEmployeeDetails(orderedEmpArr[i]);
-			
 		} // if
 	} // for
 
@@ -641,6 +640,7 @@ void employeeReport(struct employeeList *employeeHead, struct employeeReport *re
 	*/
 
 	int i, j;
+	int exists = 0;
 
 	// setting up employee linked list
 	struct employeeList *temp;
@@ -655,14 +655,116 @@ void employeeReport(struct employeeList *employeeHead, struct employeeReport *re
 	// process all employees in linked list
 	while (temp != NULL)
 	{
-		// check if employees department is in report linked list
-		// if temp->department == reportTemp->departmentName (loop through all reportTemp->nexts)
-		// if true - add details to report (eg total sal etc..) and move to next employee in LL
-		// if false - add department to employeeReport linkedlist + add details (eg sal etc)
-		
+		exists = 0;
+		reportTemp = reportHead;
 
+		// check if employees department is in report linked list
+		while (reportTemp != NULL)
+		{
+			// if first department
+			if (strncmp(reportTemp->departmentInfo.departmentName, "default", 25) == 0) 
+			{
+				strncpy(reportTemp->departmentInfo.departmentName, temp->employeeInfo.department, 25);
+				reportTemp->departmentInfo.employeeCount = 1;
+				reportTemp->departmentInfo.totalAnnualSal = temp->employeeInfo.annualSalary;
+
+				// bonuses
+				if ((2015 - temp->employeeInfo.dateJoined.year) >= 10){ // if employed 10 years or more
+					// employees bonus = 5% of annual salary
+					reportTemp->departmentInfo.totalBonus = (temp->employeeInfo.annualSalary * .05);
+				}
+				else if ((2015 - temp->employeeInfo.dateJoined.year) > 4) { // if employeed 5 - 10 years
+					// employees bonus = 4% of annual salary
+					reportTemp->departmentInfo.totalBonus = (temp->employeeInfo.annualSalary * .04);
+				}
+				else { // employed less then 5 years
+					// employees bonus = 3% of annual salary
+					reportTemp->departmentInfo.totalBonus = (temp->employeeInfo.annualSalary * .03);
+				} // if
+
+				reportTemp->departmentInfo.totalFinancialOutlay = reportTemp->departmentInfo.totalAnnualSal +
+					reportTemp->departmentInfo.totalBonus;
+				break;
+			} // if
+
+			// if department is in report linked list - update info
+			if (strncmp(temp->employeeInfo.department, reportTemp->departmentInfo.departmentName, 25) == 0){
+				// Update details
+				reportTemp->departmentInfo.employeeCount++;
+				reportTemp->departmentInfo.totalAnnualSal += temp->employeeInfo.annualSalary;
+
+				// bonuses
+				if ((2015 - temp->employeeInfo.dateJoined.year) >= 10){ // if employed 10 years or more
+					// employees bonus = 5% of annual salary
+					reportTemp->departmentInfo.totalBonus += (temp->employeeInfo.annualSalary * .05);
+				}
+				else if ((2015 - temp->employeeInfo.dateJoined.year) > 4) { // if employeed 5 - 10 years
+					// employees bonus = 4% of annual salary
+					reportTemp->departmentInfo.totalBonus += (temp->employeeInfo.annualSalary * .04);
+				}
+				else { // employed less then 5 years
+					// employees bonus = 3% of annual salary
+					reportTemp->departmentInfo.totalBonus += (temp->employeeInfo.annualSalary * .03);
+				} // if
+
+				reportTemp->departmentInfo.totalFinancialOutlay = reportTemp->departmentInfo.totalAnnualSal + 
+					reportTemp->departmentInfo.totalBonus;
+				exists = 1;
+				break;
+			} // if
+			
+			// if not in report linked list, add new department to end of report linked list
+			if(exists == 0 && reportTemp->next == NULL){
+				struct employeeReport *newDepartment;
+				newDepartment = (struct employeeReport *)malloc(sizeof(struct employeeReport));
+
+				strncpy(newDepartment->departmentInfo.departmentName, temp->employeeInfo.department, 25);
+				newDepartment->departmentInfo.employeeCount = 1;
+				newDepartment->departmentInfo.totalAnnualSal = temp->employeeInfo.annualSalary;
+
+				// bonuses
+				if ((2015 - temp->employeeInfo.dateJoined.year) >= 10){ // if employed 10 years or more
+					// employees bonus = 5% of annual salary
+					newDepartment->departmentInfo.totalBonus = (temp->employeeInfo.annualSalary * .05);
+				}
+				else if ((2015 - temp->employeeInfo.dateJoined.year) > 4) { // if employeed 5 - 10 years
+					// employees bonus = 4% of annual salary
+					newDepartment->departmentInfo.totalBonus = (temp->employeeInfo.annualSalary * .04);
+				}
+				else { // employed less then 5 years
+					// employees bonus = 3% of annual salary
+					newDepartment->departmentInfo.totalBonus = (temp->employeeInfo.annualSalary * .03);
+				} // if
+
+				newDepartment->departmentInfo.totalFinancialOutlay = newDepartment->departmentInfo.totalAnnualSal +
+					newDepartment->departmentInfo.totalBonus;
+
+				// add to end of report LL
+				newDepartment->next = NULL;
+				reportTemp->next = newDepartment;
+				break;
+			} // if
+
+			reportTemp = reportTemp->next; // move to next department in LL
+		} // while
+		
 		// move to next employee in list
 		temp = temp->next;
+	} // while
+
+	// point to start of linked list
+	reportTemp = reportHead;
+
+	// print out report
+	while (reportTemp != NULL){
+		printf("\nDepartment: %s\n", reportTemp->departmentInfo.departmentName);
+		printf("\nNumber of Employees: %d", reportTemp->departmentInfo.employeeCount);
+		printf("\nTotal Salary Pre Annum: $%.2f", reportTemp->departmentInfo.totalAnnualSal);
+		printf("\nTotal Bonuses: $%.2f", reportTemp->departmentInfo.totalBonus);
+		printf("\nTotal Financial Outlay Pre Annum: $%.2f\n", reportTemp->departmentInfo.totalFinancialOutlay);
+
+		// move to next department
+		reportTemp = reportTemp->next;
 	} // while
 
 } // employeeReport()
