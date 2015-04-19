@@ -18,12 +18,20 @@ void main()
 	employeeHead = (struct employeeList *)malloc(sizeof(struct employeeList)); // allocates memory for head;
 	employeeHead->next = NULL; // no other node yet
 
+	// linked list for employee report
+	struct employeeReport *reportHead;
+	reportHead = (struct employeeReport *)malloc(sizeof(struct employeeReport)); // allocates memory for head
+	reportHead->next = NULL;
+
 	// initialise first employee
 	//initialiseFirstEmployee(employeeHead);
 	strncpy_s(employeeHead->employeeInfo.name, 25, "default", 25);
 
 	// initialise first login user
 	strncpy_s(loginHead->username, 25, "default", 25);
+
+	// initialise report linked list
+	strncpy_s(reportHead->departmentInfo.departmentName, 25, "default", 25);
 
 	// Initialise Variables
 	endProgram = menuChoice = loginValid = i = 0;
@@ -118,7 +126,7 @@ void main()
 		case 6: // employee report
 			printf("\nEmployee Report.\n");
 
-			employeeReport(employeeHead);
+			employeeReport(employeeHead, reportHead);
 			break;
 		case 7: // exit
 			printf("\n. . . Exiting . . .\n");

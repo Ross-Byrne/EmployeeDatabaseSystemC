@@ -620,86 +620,51 @@ void displayAllEmployees(struct employeeList *employeeHead)
 		}
 		else // if last employee
 		{
-			// if last employee department is different to second last
-			// print name of department
-			if (strncmp(orderedEmpArr[i]->employeeInfo.department, orderedEmpArr[i - 1]->employeeInfo.department, 25) != 0){
-				printf("\nDepartment: %s.\n", orderedEmpArr[i]->employeeInfo.department);
-				printEmployeeDetails(orderedEmpArr[i]);
-			}
-			else // if the same department, just print employee details
-			{
-				printEmployeeDetails(orderedEmpArr[i]);
-			} // if
+			printEmployeeDetails(orderedEmpArr[i]);
+			
 		} // if
 	} // for
 
 	free(orderedEmpArr);
 } // displayAllEmployees()
 
-void employeeReport(struct employeeList *employeeHead)
+void employeeReport(struct employeeList *employeeHead, struct employeeReport *reportHead)
 {
-/*	int employeeCount, i, j;
-	struct employeeList *temp;
-	char tempString1[25], tempString2[25];
-	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
-	temp = employeeHead; // points temp at start of linked list
+	/*  What to do.
 
-	// count the num of employees
-	employeeCount = 0;
+		to print out report, use display employees by department code
+		search through employees linkedlist, if the department is different
+		add department to report linked list, if the department is the same as 
+		a department already in report linked list, increase employee count for the
+		department and etc..
+		once employee LL is fully processed, print out report linked list.
+	*/
+
+	int i, j;
+
+	// setting up employee linked list
+	struct employeeList *temp;
+	temp = (struct employeeList*)malloc(sizeof(struct employeeList));
+	temp = employeeHead; // points temp at start of employee linked list
+
+	// setting up report linked list
+	struct employeeReport *reportTemp;
+	reportTemp = (struct employeeReport *)malloc(sizeof(struct employeeReport));
+	reportTemp = reportHead;
+
+	// process all employees in linked list
 	while (temp != NULL)
 	{
-		employeeCount++;
+		// check if employees department is in report linked list
+		// if temp->department == reportTemp->departmentName (loop through all reportTemp->nexts)
+		// if true - add details to report (eg total sal etc..) and move to next employee in LL
+		// if false - add department to employeeReport linkedlist + add details (eg sal etc)
+		
+
 		// move to next employee in list
 		temp = temp->next;
 	} // while
 
-	// array of pointers, pointing to employees in linkedlist
-	struct employeeList **orderedEmpArr = malloc(employeeCount * sizeof(struct employeeList *));
-	struct employeeList **orderedEmpTemp = malloc(sizeof(struct employeeList *));
-
-	i = 0;
-	do {
-		// reset temp to start of linked list
-		temp = employeeHead;
-		strncpy(tempString1, "zzzzzzzzzzzzzzzzzzzzzzzzz", 25);
-
-		while (temp != NULL)
-		{
-			exists = 0;
-			// check if current employee is in array
-			for (j = 0; j < employeeCount; j++){
-				if (temp == orderedEmpArr[j]){
-					exists = 1;
-					break;
-				} // if
-			} // for
-
-			// if current emp isnt in array, continue
-			if (exists == 0){
-				strncpy(tempString2, temp->employeeInfo.department, 25);
-				_strlwr(tempString2);
-
-				if (strncmp(tempString1, tempString2, 25) > 0){
-					orderedEmpTemp = temp;
-					strncpy(tempString1, tempString2, 25);
-				} // if
-			} // if
-
-			// move to next employee in list
-			temp = temp->next;
-		} // while
-
-		// add pointer to array of pointers
-		orderedEmpArr[i] = orderedEmpTemp;
-		i++;
-	} while (i != employeeCount);
-
-	// print employees based on department
-	for (i = 0; i < employeeCount; i++){
-		printEmployeeDetails(orderedEmpArr[i]);
-	} // for
-
-	free(orderedEmpArr); */
 } // employeeReport()
 
 // to handle users logining in

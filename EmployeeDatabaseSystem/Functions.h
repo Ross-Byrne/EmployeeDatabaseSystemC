@@ -17,6 +17,7 @@
 #define MAX_COUNT 200 
 
 // Structures
+//======================================================================================//
 
 // date strucure 31/12/1999 format
 typedef struct
@@ -53,7 +54,25 @@ struct loginUsers
 	struct loginUsers *next;
 };
 
+// department information structure
+typedef struct 
+{
+	char departmentName[25];
+	int employeeCount;
+	float totalAnnualSal;
+	float totalBonus;
+	float totalFinancialOutlay;
+}DEPARTMENT_INFO;
+
+// linked list of departments info for employee report
+struct employeeReport
+{
+	DEPARTMENT_INFO departmentInfo;
+	struct employeeReport *next;
+};
+
 // Functions
+//======================================================================================//
 
 // Menu Fuctions
 void printMainMenu();
@@ -66,7 +85,7 @@ void displayEmployeeDetails(struct employeeList *employeeHead);
 void updateEmployeeDetails(struct employeeList *employeeHead);
 void deleteEmployee(struct employeeList **employeeHeadPtr, struct employeeList *employeeHead);
 void displayAllEmployees(struct employeeList *employeeHead);
-void employeeReport(struct employeeList *employeeHead);
+void employeeReport(struct employeeList *employeeHead, struct employeeReport *reportHead);
 
 // loading employees to and from file
 void loadEmployees(struct employeeList *loginHead);
