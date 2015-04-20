@@ -99,6 +99,10 @@ void displayUsers(struct loginUsers *loginHead);
 // login validation
 int login(struct loginUsers *loginHead);
 
+// time validation
+int daysInMonth(int month, int year);
+int validateDate(int day, int month, int year);
+
 // Other Functions
 void cleanString(char *temp);
 int confirmEmployeeDelete(struct employeeList *temp);

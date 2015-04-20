@@ -84,7 +84,7 @@ void initialiseFirstEmployee(struct employeeList *temp)
 void addEmployee(struct employeeList **employeeHeadPtr, struct employeeList *employeeHead)
 {
 	char tempChar[45];
-	int tempInt = 0, firstEmployee = 0; // 1 = first employee in list, 0 = not first
+	int tempInt = 0, valid, firstEmployee = 0; // 1 = first employee in list, 0 = not first
 	float tempFloat = 0.0;
 
 	// make a temp node
@@ -138,21 +138,35 @@ void addEmployee(struct employeeList **employeeHeadPtr, struct employeeList *emp
 	cleanString(tempChar);
 	strncpy_s(newEmployee->employeeInfo.department, 25, tempChar, 25);
 
-	printf("\nEnter Date Joined\n");
-	printf("\nEnter Year (eg 1999): ");
-	fflush(stdin);
-	scanf("%d", &tempInt);
-	newEmployee->employeeInfo.dateJoined.year = tempInt;
+	valid = 0;
+	// loop while the date isn't valid
+	do {
+		printf("\nEnter Date Joined\n");
+		printf("\nEnter Year (eg 1999): ");
+		fflush(stdin);
+		scanf("%d", &tempInt);
+		newEmployee->employeeInfo.dateJoined.year = tempInt;
 
-	printf("Enter Month (eg 03): ");
-	fflush(stdin);
-	scanf("%d", &tempInt);
-	newEmployee->employeeInfo.dateJoined.month = tempInt;
+		printf("Enter Month (eg 03): ");
+		fflush(stdin);
+		scanf("%d", &tempInt);
+		newEmployee->employeeInfo.dateJoined.month = tempInt;
 
-	printf("Enter Day (eg 28): ");
-	fflush(stdin);
-	scanf("%d", &tempInt);
-	newEmployee->employeeInfo.dateJoined.day = tempInt;
+		printf("Enter Day (eg 28): ");
+		fflush(stdin);
+		scanf("%d", &tempInt);
+		newEmployee->employeeInfo.dateJoined.day = tempInt;
+		
+		// returns 1 if date is valid, 0 if it isn't
+		valid = validateDate(newEmployee->employeeInfo.dateJoined.day,
+			newEmployee->employeeInfo.dateJoined.month,
+			newEmployee->employeeInfo.dateJoined.year);
+
+		if (valid == 0){
+			printf("\nDate Entered is Not Valid! Enter Again!\n");
+		} // if
+
+	} while (!valid);
 	
 	printf("\nEnter Annual Salary: ");
 	fflush(stdin);
@@ -755,7 +769,7 @@ void employeeReport(struct employeeList *employeeHead, struct employeeReport *re
 	// point to start of linked list
 	reportTemp = reportHead;
 
-	// print out report
+	// print out report - print to file too
 	while (reportTemp != NULL){
 		printf("\nDepartment: %s\n", reportTemp->departmentInfo.departmentName);
 		printf("\nNumber of Employees: %d", reportTemp->departmentInfo.employeeCount);
@@ -768,6 +782,31 @@ void employeeReport(struct employeeList *employeeHead, struct employeeReport *re
 	} // while
 
 } // employeeReport()
+
+// gets the year and month and returns the max number of
+// days that can be in that month
+int daysInMonth(int month, int year)
+{
+	int days[] = { 31, 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+	// if leap year, febuary has 29 instead of 28 days
+	days[1] = ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) ? 29 : 28;
+
+	return days[month - 1];
+} // daysInMonth()
+
+// checks to make sure that the date is valid
+// if it is possible to have the number of days
+// stated in the month of the year given
+// then date is valid and returns 1
+int validateDate(int day, int month, int year)
+{
+	if (day >= 1 && day <= daysInMonth(month, year)){
+		return 1;
+	} // if
+
+	return 0;
+} // validateDate()
 
 // to handle users logining in
 // returns 1 if details are correct, 0 if uncorrect
