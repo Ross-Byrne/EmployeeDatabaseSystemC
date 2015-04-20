@@ -1,24 +1,24 @@
-﻿Build started 20/04/2015 14:25:30.
+﻿Build started 20/04/2015 14:53:11.
      1>Project "C:\Users\Ross Byrne\Documents\GitHub\EmployeeDatabaseSystemC\EmployeeDatabaseSystem\EmployeeDatabaseSystem.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt Functions.c
          Functions.c
      1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(49): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(60): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(602): warning C4047: '=' : 'employeeList **' differs in levels of indirection from 'employeeList *'
-     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(612): warning C4047: '=' : 'employeeList *' differs in levels of indirection from 'employeeList **'
-     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(688): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(692): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(696): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(713): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(717): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(721): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(742): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(746): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(750): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(656): warning C4101: 'i' : unreferenced local variable
-     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(656): warning C4101: 'j' : unreferenced local variable
-     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(1021): warning C4098: 'loadEmployees' : 'void' function returning a value
+     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(626): warning C4047: '=' : 'employeeList **' differs in levels of indirection from 'employeeList *'
+     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(636): warning C4047: '=' : 'employeeList *' differs in levels of indirection from 'employeeList **'
+     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(712): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(716): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(720): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(737): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(741): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(745): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(766): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(770): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(774): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(680): warning C4101: 'i' : unreferenced local variable
+     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(680): warning C4101: 'j' : unreferenced local variable
+     1>c:\users\ross byrne\documents\github\employeedatabasesystemc\employeedatabasesystem\functions.c(1045): warning C4098: 'loadEmployees' : 'void' function returning a value
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Ross Byrne\Documents\GitHub\EmployeeDatabaseSystemC\Debug\EmployeeDatabaseSystem.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Ross Byrne\Documents\GitHub\EmployeeDatabaseSystemC\Debug\EmployeeDatabaseSystem.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Ross Byrne\Documents\GitHub\EmployeeDatabaseSystemC\Debug\EmployeeDatabaseSystem.lib" /MACHINE:X86 Debug\Functions.obj
          Debug\Main.obj
@@ -27,4 +27,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.61
+Time Elapsed 00:00:00.56

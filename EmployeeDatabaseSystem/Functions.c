@@ -115,10 +115,31 @@ void addEmployee(struct employeeList **employeeHeadPtr, struct employeeList *emp
 	// enter data
 	printf("\nEnter New Employee's Details.\n");
 
-	printf("\nEnter ID (Must Be Unique Number): ");
-	fflush(stdin);
-	scanf("%d", &tempInt);
-	newEmployee->employeeInfo.id = tempInt;
+	valid = 0;
+	// to make sure ID entered is unique
+	do{
+		temp = employeeHead;
+
+		printf("\nEnter ID (Must Be Unique Number): ");
+		fflush(stdin);
+		scanf("%d", &tempInt);
+		newEmployee->employeeInfo.id = tempInt;
+
+		while (temp != NULL){
+			
+			if (newEmployee->employeeInfo.id == temp->employeeInfo.id) {
+				printf("\nThis ID Number is Taken! Enter Different ID!\n");
+				valid = 0;
+				break;
+			}
+			else{ // if ID is unique
+				valid = 1;
+			} // if
+
+			temp = temp->next;
+		} // while
+
+	} while (valid == 0); // while
 
 	printf("\nEnter Name: ");
 	fflush(stdin);
@@ -181,6 +202,9 @@ void addEmployee(struct employeeList **employeeHeadPtr, struct employeeList *emp
 
 	printf("\nEmployee Added.\n");
 	printEmployeeDetails(newEmployee);
+
+	// point temp at start of Linked list
+	temp = employeeHead;
 
 	if (firstEmployee == 1) // if employee is first in empty list
 	{
@@ -801,7 +825,7 @@ int daysInMonth(int month, int year)
 // then date is valid and returns 1
 int validateDate(int day, int month, int year)
 {
-	if (day >= 1 && day <= daysInMonth(month, year)){
+	if (day >= 1 && day <= daysInMonth(month, year) && year >= 1900){
 		return 1;
 	} // if
 
