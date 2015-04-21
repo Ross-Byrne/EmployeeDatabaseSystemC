@@ -9,7 +9,7 @@
 
 // File Reading and Writing
 #define USER_LOGIN "UserLogin.txt"
-#define EMPLOYEE_DATA "EmployeeData.txt"
+#define EMPLOYEE_DATA "Employees.txt"
 #define WRITEMODE "w"
 #define READMODE "r"
 #define APPENDMODE "a"
