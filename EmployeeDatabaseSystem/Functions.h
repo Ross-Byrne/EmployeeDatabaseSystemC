@@ -103,6 +103,9 @@ int login(struct loginUsers *loginHead);
 int daysInMonth(int month, int year);
 int validateDate(int day, int month, int year);
 
+// email Validation
+int emailValidation(char *email);
+
 // Other Functions
 void cleanString(char *temp);
 int confirmEmployeeDelete(struct employeeList *temp);

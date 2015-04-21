@@ -127,7 +127,7 @@ void addEmployee(struct employeeList **employeeHeadPtr, struct employeeList *emp
 
 		while (temp != NULL){
 			
-			if (newEmployee->employeeInfo.id == temp->employeeInfo.id) {
+			if (newEmployee->employeeInfo.id == temp->employeeInfo.id || newEmployee->employeeInfo.id == 0) {
 				printf("\nThis ID Number is Taken! Enter Different ID!\n");
 				valid = 0;
 				break;
@@ -194,11 +194,21 @@ void addEmployee(struct employeeList **employeeHeadPtr, struct employeeList *emp
 	scanf("%f", &tempFloat);
 	newEmployee->employeeInfo.annualSalary = tempFloat;
 
-	printf("\nEnter E-mail Address: ");
-	fflush(stdin);
-	fgets(tempChar, 35, stdin);
-	cleanString(tempChar);
-	strncpy_s(newEmployee->employeeInfo.email, 35, tempChar, 35);
+	valid = 0;
+	do{
+		printf("\nEnter E-mail Address: ");
+		fflush(stdin);
+		fgets(tempChar, 35, stdin);
+		cleanString(tempChar);
+		strncpy_s(newEmployee->employeeInfo.email, 35, tempChar, 35);
+
+		// validate email address
+		valid = emailValidation(newEmployee->employeeInfo.email);
+
+		if (valid == 0){
+			printf("\nE-mail Address Not Valid! Must Contain '.', '@' And End In '.com'!");
+		} // if
+	} while (!valid);
 
 	printf("\nEmployee Added.\n");
 	printEmployeeDetails(newEmployee);
@@ -831,6 +841,38 @@ int validateDate(int day, int month, int year)
 
 	return 0;
 } // validateDate()
+
+// returns 1 if email is valid, 0 if it isn't
+int emailValidation(char *email)
+{
+	int i, valid = 0, strL = 0;
+	
+	_strlwr(email); // convert to lowercase
+	strL = strlen(email) - 1; // get length
+
+	// if email has ".com" at end, it is part valid
+	if (email[strL] == 'm' && email[strL - 1] == 'o' && email[strL - 2] == 'c' && email[strL - 3] == '.'){
+		valid++;
+	} // if
+
+	// checks to make sure email has '@' and a '.' (that isn't the one in .com)
+	for (i = 0; i < strL - 3; i++){ // to not include ".com" at end
+		if (email[i] == '.'){
+			valid++;
+		} // if
+
+		if (email[i] == '@'){
+			valid++;
+		} // if
+	} // for 
+
+	if (valid == 3){ // if all 3 parts are valid, email is valid
+		return 1;
+	}
+	else{
+		return 0;
+	} // if
+} // emailValidation()
 
 // to handle users logining in
 // returns 1 if details are correct, 0 if uncorrect
