@@ -878,7 +878,8 @@ int emailValidation(char *email)
 // returns 1 if details are correct, 0 if uncorrect
 int login(struct loginUsers *loginHead)
 {
-	char user[25] = "user", pass[25] = "pass";
+	int i = 0;
+	char user[25] = "user", pass[25] = "pass", c;
 	struct loginUsers *temp;
 	temp = (struct loginUsers*)malloc(sizeof(struct loginUsers));
 	temp = loginHead;
@@ -891,8 +892,20 @@ int login(struct loginUsers *loginHead)
 
 	printf("Enter Your Password: ");
 	fflush(stdin);
-	fgets(pass, 25, stdin);
-	cleanString(pass);
+
+	// star the password as it is being typed
+	do { // 13 == carriage return in ascii
+		c = _getch();
+
+		if (c == 13){
+			break;
+		}
+		else{
+			pass[i] = c;
+			printf("*");
+			i++;
+		} // if
+	}while (c != 13); // while
 
 	while (temp != NULL)
 	{
