@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include<conio.h>
 
 // File Reading and Writing
@@ -103,6 +104,9 @@ int login(struct loginUsers *loginHead);
 int daysInMonth(int month, int year);
 int validateDate(int day, int month, int year);
 
+// Other time functions
+time_t getEmployeeTime(struct employeeList *temp);
+
 // email Validation
 int emailValidation(char *email);
 
@@ -112,3 +116,5 @@ int confirmEmployeeDelete(struct employeeList *temp);
 int searchEmployeeByIdOrName();
 void printEmployeeDetails(struct employeeList *temp);
 void editString(char *temp, int num);
+void addReportDepartment(struct employeeList *temp, struct employeeReport *newDepartment);
+void updateReportDepartment(struct employeeList *temp, struct employeeReport *reportTemp);

@@ -675,18 +675,9 @@ void displayAllEmployees(struct employeeList *employeeHead)
 	free(orderedEmpArr);
 } // displayAllEmployees()
 
+// prints out employee report
 void employeeReport(struct employeeList *employeeHead, struct employeeReport *reportHead)
 {
-	/*  What to do.
-
-		to print out report, use display employees by department code
-		search through employees linkedlist, if the department is different
-		add department to report linked list, if the department is the same as 
-		a department already in report linked list, increase employee count for the
-		department and etc..
-		once employee LL is fully processed, print out report linked list.
-	*/
-
 	int i, j;
 	int exists = 0;
 
@@ -710,53 +701,20 @@ void employeeReport(struct employeeList *employeeHead, struct employeeReport *re
 		while (reportTemp != NULL)
 		{
 			// if first department
-			if (strncmp(reportTemp->departmentInfo.departmentName, "default", 25) == 0) 
-			{
-				strncpy(reportTemp->departmentInfo.departmentName, temp->employeeInfo.department, 25);
-				reportTemp->departmentInfo.employeeCount = 1;
-				reportTemp->departmentInfo.totalAnnualSal = temp->employeeInfo.annualSalary;
+			if (strncmp(reportTemp->departmentInfo.departmentName, "default", 25) == 0) {
 
-				// bonuses
-				if ((2015 - temp->employeeInfo.dateJoined.year) >= 10){ // if employed 10 years or more
-					// employees bonus = 5% of annual salary
-					reportTemp->departmentInfo.totalBonus = (temp->employeeInfo.annualSalary * .05);
-				}
-				else if ((2015 - temp->employeeInfo.dateJoined.year) > 4) { // if employeed 5 - 10 years
-					// employees bonus = 4% of annual salary
-					reportTemp->departmentInfo.totalBonus = (temp->employeeInfo.annualSalary * .04);
-				}
-				else { // employed less then 5 years
-					// employees bonus = 3% of annual salary
-					reportTemp->departmentInfo.totalBonus = (temp->employeeInfo.annualSalary * .03);
-				} // if
+				// add first department to linked list
+				addReportDepartment(temp, reportTemp);
 
-				reportTemp->departmentInfo.totalFinancialOutlay = reportTemp->departmentInfo.totalAnnualSal +
-					reportTemp->departmentInfo.totalBonus;
 				break;
 			} // if
 
 			// if department is in report linked list - update info
 			if (strncmp(temp->employeeInfo.department, reportTemp->departmentInfo.departmentName, 25) == 0){
-				// Update details
-				reportTemp->departmentInfo.employeeCount++;
-				reportTemp->departmentInfo.totalAnnualSal += temp->employeeInfo.annualSalary;
 
-				// bonuses
-				if ((2015 - temp->employeeInfo.dateJoined.year) >= 10){ // if employed 10 years or more
-					// employees bonus = 5% of annual salary
-					reportTemp->departmentInfo.totalBonus += (temp->employeeInfo.annualSalary * .05);
-				}
-				else if ((2015 - temp->employeeInfo.dateJoined.year) > 4) { // if employeed 5 - 10 years
-					// employees bonus = 4% of annual salary
-					reportTemp->departmentInfo.totalBonus += (temp->employeeInfo.annualSalary * .04);
-				}
-				else { // employed less then 5 years
-					// employees bonus = 3% of annual salary
-					reportTemp->departmentInfo.totalBonus += (temp->employeeInfo.annualSalary * .03);
-				} // if
+				// Update details of department
+				updateReportDepartment(temp, reportTemp);
 
-				reportTemp->departmentInfo.totalFinancialOutlay = reportTemp->departmentInfo.totalAnnualSal + 
-					reportTemp->departmentInfo.totalBonus;
 				exists = 1;
 				break;
 			} // if
@@ -766,26 +724,8 @@ void employeeReport(struct employeeList *employeeHead, struct employeeReport *re
 				struct employeeReport *newDepartment;
 				newDepartment = (struct employeeReport *)malloc(sizeof(struct employeeReport));
 
-				strncpy(newDepartment->departmentInfo.departmentName, temp->employeeInfo.department, 25);
-				newDepartment->departmentInfo.employeeCount = 1;
-				newDepartment->departmentInfo.totalAnnualSal = temp->employeeInfo.annualSalary;
-
-				// bonuses
-				if ((2015 - temp->employeeInfo.dateJoined.year) >= 10){ // if employed 10 years or more
-					// employees bonus = 5% of annual salary
-					newDepartment->departmentInfo.totalBonus = (temp->employeeInfo.annualSalary * .05);
-				}
-				else if ((2015 - temp->employeeInfo.dateJoined.year) > 4) { // if employeed 5 - 10 years
-					// employees bonus = 4% of annual salary
-					newDepartment->departmentInfo.totalBonus = (temp->employeeInfo.annualSalary * .04);
-				}
-				else { // employed less then 5 years
-					// employees bonus = 3% of annual salary
-					newDepartment->departmentInfo.totalBonus = (temp->employeeInfo.annualSalary * .03);
-				} // if
-
-				newDepartment->departmentInfo.totalFinancialOutlay = newDepartment->departmentInfo.totalAnnualSal +
-					newDepartment->departmentInfo.totalBonus;
+				// adds info into newDepartment
+				addReportDepartment(temp, newDepartment);
 
 				// add to end of report LL
 				newDepartment->next = NULL;
@@ -816,6 +756,92 @@ void employeeReport(struct employeeList *employeeHead, struct employeeReport *re
 	} // while
 
 } // employeeReport()
+
+// adds info for new department in the report
+void addReportDepartment(struct employeeList *temp, struct employeeReport *newDepartment)
+{
+	strncpy(newDepartment->departmentInfo.departmentName, temp->employeeInfo.department, 25);
+	newDepartment->departmentInfo.employeeCount = 1;
+	newDepartment->departmentInfo.totalAnnualSal = temp->employeeInfo.annualSalary;
+	
+	// bonuses
+	time_t curTime;
+	struct tm *timeinfo;
+
+	// gets current calender time
+	time(&curTime); 
+	// gets current time and puts it in tm struct
+	timeinfo = localtime(&curTime);
+	// mktime turns tm struct a time_t
+	curTime = mktime(timeinfo);
+
+	if (difftime(curTime, getEmployeeTime(temp)) >= 31536000 * 10){ // if employed 10 years or more 31536000 seconds = 1 year
+		// employees bonus = 5% of annual salary
+		newDepartment->departmentInfo.totalBonus = (temp->employeeInfo.annualSalary * .05);
+	}
+	else if (difftime(curTime, getEmployeeTime(temp)) > 31536000 * 4) { // if employeed 5 - 10 years
+		// employees bonus = 4% of annual salary
+		newDepartment->departmentInfo.totalBonus = (temp->employeeInfo.annualSalary * .04);
+	}
+	else { // employed less then 5 years
+		// employees bonus = 3% of annual salary
+		newDepartment->departmentInfo.totalBonus = (temp->employeeInfo.annualSalary * .03);
+	} // if
+
+	newDepartment->departmentInfo.totalFinancialOutlay = newDepartment->departmentInfo.totalAnnualSal +
+		newDepartment->departmentInfo.totalBonus;
+} // addReportDepartment()
+
+// updates the info for a department in the report
+void updateReportDepartment(struct employeeList *temp, struct employeeReport *reportTemp)
+{
+	reportTemp->departmentInfo.employeeCount++;
+	reportTemp->departmentInfo.totalAnnualSal += temp->employeeInfo.annualSalary;
+
+	// bonuses
+	time_t curTime;
+	struct tm *timeinfo;
+
+	// gets current calender time
+	time(&curTime); 
+	// gets current time and puts it in tm struct
+	timeinfo = localtime(&curTime);
+	// mktime turns tm struct a time_t
+	curTime = mktime(timeinfo);
+
+	if (difftime(curTime, getEmployeeTime(temp)) >= 31536000 * 10){ // if employed 10 years or more 31536000 seconds = 1 year
+		// employees bonus = 5% of annual salary
+		reportTemp->departmentInfo.totalBonus += (temp->employeeInfo.annualSalary * .05);
+	}
+	else if (difftime(curTime, getEmployeeTime(temp)) > 31536000 * 4) { // if employeed 5 - 10 years
+		// employees bonus = 4% of annual salary
+		reportTemp->departmentInfo.totalBonus += (temp->employeeInfo.annualSalary * .04);
+	}
+	else { // employed less then 5 years
+		// employees bonus = 3% of annual salary
+		reportTemp->departmentInfo.totalBonus += (temp->employeeInfo.annualSalary * .03);
+	} // if
+
+	reportTemp->departmentInfo.totalFinancialOutlay = reportTemp->departmentInfo.totalAnnualSal +
+		reportTemp->departmentInfo.totalBonus;
+} // updateReportDepartment()
+
+// returns employees hireDate as time_t
+time_t getEmployeeTime(struct employeeList *temp)
+{
+	time_t rawtime;
+	struct tm *timeinfo;
+
+	// get current timeinfo and modify it to user's choice
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+	timeinfo->tm_year = temp->employeeInfo.dateJoined.year - 1900;
+	timeinfo->tm_mon = temp->employeeInfo.dateJoined.month - 1;
+	timeinfo->tm_mday = temp->employeeInfo.dateJoined.day;
+
+	// returns timeinfo as time_t
+	return mktime(timeinfo);
+} // getEmployeeTime()
 
 // gets the year and month and returns the max number of
 // days that can be in that month
