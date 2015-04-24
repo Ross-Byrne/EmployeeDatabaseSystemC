@@ -21,7 +21,7 @@ Password: helloworld
 Username: Ross_Byrne 
 Password: banana
 
-#Program Features.
+#Program Features
 
 After the user logs in, the main program menu is shown.
 These menu options are as follows:
@@ -69,7 +69,7 @@ Contents Of Report:
 	         Employee information, to "Employees.txt" and then
 	         exits the program.
 
-#Other Features.
+#Other Features
 
 - The hire date being set for employees must be a valid date.
 - Employee E-mail addresses must contain a '.', '@' and must end with '.com'.
