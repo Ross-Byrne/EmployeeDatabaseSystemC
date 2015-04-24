@@ -24,7 +24,6 @@ void main()
 	reportHead->next = NULL;
 
 	// initialise first employee
-	//initialiseFirstEmployee(employeeHead);
 	strncpy_s(employeeHead->employeeInfo.name, 25, "default", 25);
 
 	// initialise first login user

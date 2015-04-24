@@ -11,6 +11,7 @@
 // File Reading and Writing
 #define USER_LOGIN "UserLogin.txt"
 #define EMPLOYEE_DATA "Employees.txt"
+#define EMPLOYEE_REPORT "EmployeeReport.txt"
 #define WRITEMODE "w"
 #define READMODE "r"
 #define APPENDMODE "a"
@@ -118,3 +119,4 @@ void printEmployeeDetails(struct employeeList *temp);
 void editString(char *temp, int num);
 void addReportDepartment(struct employeeList *temp, struct employeeReport *newDepartment);
 void updateReportDepartment(struct employeeList *temp, struct employeeReport *reportTemp);
+void printEmployeeReport(struct employeeReport *reportHead);

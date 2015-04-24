@@ -30,8 +30,7 @@ void cleanString(char *temp)
 {
 	// checks for '\n' newline char that gets added to end of string with fgets()
 	// and then removes it
-	if (temp[strlen(temp) - 1] == '\n')
-	{
+	if (temp[strlen(temp) - 1] == '\n'){
 		temp[strlen(temp) - 1] = '\0';
 	} // if
 } // cleanString()
@@ -43,43 +42,23 @@ void editString(char *temp, int num)
 {
 	int i = 0;
 
-	if (num == 1)
-	{
+	if (num == 1){
 		// checks for space char and replaces with '_' underscore char
-		for (i = 0; i < strlen(temp) - 1; i++)
-		{
-			if (temp[i] == ' ')
-			{
+		for (i = 0; i < strlen(temp) - 1; i++){
+			if (temp[i] == ' '){
 				temp[i] = '_';
 			} // if
 		} // for
 	}
-	else
-	{
+	else{
 		// checks for underscore char and replaces with ' ' space char
-		for (i = 0; i < strlen(temp) - 1; i++)
-		{
-			if (temp[i] == '_')
-			{
+		for (i = 0; i < strlen(temp) - 1; i++){
+			if (temp[i] == '_'){
 				temp[i] = ' ';
 			} // if
 		} // for
-	}
+	} // if
 } // editString()
-
-// adds values for first employee to initialise the linked list
-void initialiseFirstEmployee(struct employeeList *temp)
-{
-	temp->employeeInfo.id = 1111;
-	strncpy_s(temp->employeeInfo.name, 25, "Mike Sullivan", 25);
-	strncpy_s(temp->employeeInfo.address, 45, "Galway, Ireland", 45);
-	strncpy_s(temp->employeeInfo.department, 25, "Sales & Marketing", 25);
-	temp->employeeInfo.dateJoined.day = 25;
-	temp->employeeInfo.dateJoined.month = 03;
-	temp->employeeInfo.dateJoined.year = 2000;
-	temp->employeeInfo.annualSalary = 38000.00;
-	strncpy_s(temp->employeeInfo.email, 35, "mike.sullivan@gmail.com", 35);
-} // initialiseFirstEmployee()
 
 void addEmployee(struct employeeList **employeeHeadPtr, struct employeeList *employeeHead)
 {
@@ -97,13 +76,11 @@ void addEmployee(struct employeeList **employeeHeadPtr, struct employeeList *emp
 	oldTemp = NULL;
 	temp = employeeHead; // make it point at start of linked list
 	
-	if (employeeHead == NULL) // if list is empty
-	{
+	if (employeeHead == NULL) { // if list is empty
 		// flag employee as being first in list
 		firstEmployee = 1;
 	}
-	else // if list isn't empty
-	{
+	else { // if list isn't empty
 		// flag employee as not being first in empty list
 		firstEmployee = 0;
 	} // if
@@ -216,30 +193,25 @@ void addEmployee(struct employeeList **employeeHeadPtr, struct employeeList *emp
 	// point temp at start of Linked list
 	temp = employeeHead;
 
-	if (firstEmployee == 1) // if employee is first in empty list
-	{
+	if (firstEmployee == 1) { // if employee is first in empty list
 		// make the new employee the head
 		newEmployee->next = NULL; // new employee doesn't point to anything
 		*employeeHeadPtr = newEmployee; // makes this employee the start of linked list
 	}
-	else // if firstEmployee == 0 - is't first
-	{
+	else { // if firstEmployee == 0 - is't first
 		// adds employees into list in ascending order by id
 		// checks for employee id bigger then one entered
 		// and adds employee into list before it - keeping list ordered
-		while (temp->next != NULL)
-		{
+		while (temp->next != NULL){
 			// if temp is head
-			if (temp->employeeInfo.id > newEmployee->employeeInfo.id && oldTemp == NULL)
-			{
+			if (temp->employeeInfo.id > newEmployee->employeeInfo.id && oldTemp == NULL){
 				*employeeHeadPtr = newEmployee;
 				newEmployee->next = temp;
 				return;
 			} // if
 
 			// if temp is not head
-			if (temp->employeeInfo.id > newEmployee->employeeInfo.id && oldTemp != NULL)
-			{
+			if (temp->employeeInfo.id > newEmployee->employeeInfo.id && oldTemp != NULL){
 				oldTemp->next = newEmployee;
 				newEmployee->next = temp;
 				return;
@@ -250,14 +222,12 @@ void addEmployee(struct employeeList **employeeHeadPtr, struct employeeList *emp
 		} // while
 
 		// Adding newEmployee before last item in linked list
-		if (temp->employeeInfo.id > newEmployee->employeeInfo.id)
-		{
+		if (temp->employeeInfo.id > newEmployee->employeeInfo.id){
 			oldTemp->next = newEmployee;
 			newEmployee->next = temp;
 			return;
 		}
-		else // if last item isn't bigger, just add to end of linked list
-		{
+		else { // if last item isn't bigger, just add to end of linked list
 			newEmployee->next = NULL; // new employee doesn't point to anything
 			temp->next = newEmployee; // adds new employee to end of linked list
 		} // if	
@@ -291,10 +261,8 @@ void displayEmployeeDetails(struct employeeList *employeeHead)
 		return;
 	} // switch
 
-	while (temp != NULL)
-	{
-		if (temp->employeeInfo.id == employeeId || strncmp(temp->employeeInfo.name, employeeName, 25) == 0)
-		{
+	while (temp != NULL){
+		if (temp->employeeInfo.id == employeeId || strncmp(temp->employeeInfo.name, employeeName, 25) == 0){
 			printf("\nEmployee Found.\n");
 			printEmployeeDetails(temp);
 			return;
@@ -339,8 +307,7 @@ void updateEmployeeDetails(struct employeeList *employeeHead)
 		menuChoice = 0;
 
 		// if either employee id or name is equal
-		if (temp->employeeInfo.id == employeeId || strncmp(temp->employeeInfo.name, employeeName, 25) == 0)
-		{
+		if (temp->employeeInfo.id == employeeId || strncmp(temp->employeeInfo.name, employeeName, 25) == 0){
 			printf("\nEmployee Found.\n");
 			printEmployeeDetails(temp);
 
@@ -743,19 +710,63 @@ void employeeReport(struct employeeList *employeeHead, struct employeeReport *re
 	// point to start of linked list
 	reportTemp = reportHead;
 
-	// print out report - print to file too
-	while (reportTemp != NULL){
-		printf("\nDepartment: %s\n", reportTemp->departmentInfo.departmentName);
-		printf("\nNumber of Employees: %d", reportTemp->departmentInfo.employeeCount);
-		printf("\nTotal Salary Pre Annum: $%.2f", reportTemp->departmentInfo.totalAnnualSal);
-		printf("\nTotal Bonuses: $%.2f", reportTemp->departmentInfo.totalBonus);
-		printf("\nTotal Financial Outlay Pre Annum: $%.2f\n", reportTemp->departmentInfo.totalFinancialOutlay);
-
-		// move to next department
-		reportTemp = reportTemp->next;
-	} // while
+	// print out Employee Report to screen and the file "EmployeeReport.txt"
+	printEmployeeReport(reportHead);
 
 } // employeeReport()
+
+// prints the employee report to the screen and to "EmployeeReport.txt"
+void printEmployeeReport(struct employeeReport *reportHead)
+{
+	FILE *fPtr = NULL;
+
+	// open file
+	fPtr = fopen(EMPLOYEE_REPORT, WRITEMODE);
+	if (fPtr == NULL){
+		printf("\n\n\tCould Not open file\n");
+	}
+	else{
+		struct employeeReport *reportTemp;
+		reportTemp = (struct employeeReport*)malloc(sizeof(struct employeeReport));
+		reportTemp = reportHead; // points temp at start of linked list
+
+		while (reportTemp != NULL){
+			// if default - not an actual report so skip
+			if (strncmp(reportTemp->departmentInfo.departmentName, "default", 25) == 0) {
+				// move to next department
+				reportTemp = reportTemp->next;
+			}
+			else{
+				// Saves Employee Report to file
+				fprintf(fPtr, "Department: %s\n", reportTemp->departmentInfo.departmentName);
+				fprintf(fPtr, "Number of Employees: %d\n", reportTemp->departmentInfo.employeeCount);
+				fprintf(fPtr, "Total Salary Pre Annum: $%.2f\n", reportTemp->departmentInfo.totalAnnualSal);
+				fprintf(fPtr, "Total Bonuses: $%.2f\n", reportTemp->departmentInfo.totalBonus);
+				fprintf(fPtr, "Total Financial Outlay Pre Annum: $%.2f\n\n", reportTemp->departmentInfo.totalFinancialOutlay);
+
+				// print Employee Report To Screen
+				printf("\nDepartment: %s\n", reportTemp->departmentInfo.departmentName);
+				printf("\nNumber of Employees: %d", reportTemp->departmentInfo.employeeCount);
+				printf("\nTotal Salary Pre Annum: $%.2f", reportTemp->departmentInfo.totalAnnualSal);
+				printf("\nTotal Bonuses: $%.2f", reportTemp->departmentInfo.totalBonus);
+				printf("\nTotal Financial Outlay Pre Annum: $%.2f\n", reportTemp->departmentInfo.totalFinancialOutlay);
+
+				// change department name to "default" so if the user wants to 
+				// print out a second report, old values will be replaced
+				strncpy_s(reportTemp->departmentInfo.departmentName, 25, "default", 25);
+
+				// move to next department
+				reportTemp = reportTemp->next;
+			} // if
+		} // while
+
+		// Informing the user of report file
+		printf("\nA Copy Of Employee Report Saved To 'EmployeeReport.txt'\n");
+
+		// close the file
+		fclose(fPtr);
+	} // if
+} // printEmployeeReport()
 
 // adds info for new department in the report
 void addReportDepartment(struct employeeList *temp, struct employeeReport *newDepartment)
@@ -957,17 +968,14 @@ void addLoginUser(struct loginUsers *loginHead, char user[25], char pass[25])
 	temp = loginHead; // make it point at start of linked list
 
 	// if first login user is default, override it 
-	if (strncmp(temp->username, "default", 25) == 0)
-	{
+	if (strncmp(temp->username, "default", 25) == 0){
 		// overrides default
 		strncpy_s(temp->username, 25, user, 25);
 		strncpy_s(temp->password, 25, pass, 25);
 	}
-	else
-	{
+	else{
 		// go to the last item in list
-		while (temp->next != NULL)
-		{
+		while (temp->next != NULL){
 			temp = temp->next;
 		} // while
 
@@ -991,8 +999,7 @@ void displayUsers(struct loginUsers *loginHead)
 	temp = (struct loginUsers*)malloc(sizeof(struct loginUsers));
 	temp = loginHead;
 
-	while (temp != NULL)
-	{
+	while (temp != NULL){
 		printf("\nUser Name: %s Pass: %s\n", temp->username, temp->password); // show data
 		temp = temp->next;
 	} // while
@@ -1009,19 +1016,16 @@ void loadUsers(struct loginUsers *loginHead)
 	char user[25] = "EOF", pass[25] = "pass";
 
 	fPtr = fopen(USER_LOGIN, READMODE);
-	if (fPtr == NULL)
-	{
+	if (fPtr == NULL){
 		printf("\n\nCould Not open file '%s'.\n", USER_LOGIN);
 	}
-	else
-	{
+	else{
 		// save values from text file to variables
 		// initial read
 		fscanf(fPtr, "%s", user);
 
 		// keeps reading until end of file
-		while (strncmp(user, "EOF", 25) != 0) 
-		{
+		while (strncmp(user, "EOF", 25) != 0) {
 			fscanf(fPtr, "%s", pass);
 
 			// adds a login user to linked list
@@ -1052,22 +1056,18 @@ void loadEmployees(struct employeeList *loginHead)
 	temp = loginHead; // make it point at start of linked list
 
 	fPtr = fopen(EMPLOYEE_DATA, READMODE);
-	if (fPtr == NULL)
-	{
+	if (fPtr == NULL){
 		printf("\n\nCould Not open file '%s'.\n", EMPLOYEE_DATA);
 	}
-	else
-	{
+	else{
 		// save values from text file to variables
 		// initial read
 		fscanf(fPtr, "%d", &i);
 
 		// keeps reading until end of file
-		while (i != 0)
-		{
+		while (i != 0){
 			// if first employee is default, override it 
-			if (strncmp(temp->employeeInfo.name, "default", 25) == 0)
-			{
+			if (strncmp(temp->employeeInfo.name, "default", 25) == 0){
 				// overrides default
 				temp->employeeInfo.id = i;
 				fscanf(fPtr, "%s", temp->employeeInfo.name);
@@ -1087,8 +1087,7 @@ void loadEmployees(struct employeeList *loginHead)
 			else // add to end of list
 			{
 				// go to the last item in list
-				while (temp->next != NULL)
-				{
+				while (temp->next != NULL){
 					temp = temp->next;
 				} // while
 
@@ -1135,18 +1134,15 @@ void saveEmployees(struct employeeList *employeeHead)
 
 	// open file
 	fPtr = fopen(EMPLOYEE_DATA, WRITEMODE);
-	if (fPtr == NULL)
-	{
+	if (fPtr == NULL){
 		printf("\n\n\tCould Not open file\n");
 	}
-	else
-	{
+	else{
 		struct employeeList *temp;
 		temp = (struct employeeList*)malloc(sizeof(struct employeeList));
 		temp = employeeHead; // points temp at start of linked list
 
-		while (temp != NULL)
-		{
+		while (temp != NULL){
 			// edit strings by replacing spaces with underscores
 			// so they can be read from file easier
 			editString(temp->employeeInfo.name, 1); // 1 to replace spaces

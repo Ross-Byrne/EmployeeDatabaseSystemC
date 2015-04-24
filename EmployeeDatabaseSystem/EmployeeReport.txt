@@ -1,0 +1,12 @@
+Department: Sales & Marketing
+Number of Employees: 2
+Total Salary Pre Annum: $83000.00
+Total Bonuses: $4150.00
+Total Financial Outlay Pre Annum: $87150.00
+
+Department: Research & Development
+Number of Employees: 2
+Total Salary Pre Annum: $70000.00
+Total Bonuses: $3500.00
+Total Financial Outlay Pre Annum: $73500.00
+
