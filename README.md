@@ -1,6 +1,6 @@
 # EmployeeDatabaseSystemC
 
-This is a second year college project for Advanced Procedural Programming, written in C in Visual Studio 2013 
+This is a second year college project for Advanced Procedural Programming, written in C in Visual Studio 2013 - Grade: 90.63%
 
 Employee database using a "Employees.txt" to hold all employee information.
 When the program turns on, it loads employee information into a linked list.
